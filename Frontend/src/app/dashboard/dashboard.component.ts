@@ -494,23 +494,38 @@ onPageChange(pageNumber: number) {
 
 getCurrentPageData() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  const filteredData = this.itemData.filter(item => 
-    item.personname.toLowerCase().includes(this.searchKeyword.toLowerCase())
+  const keyword = this.searchKeyword.toLowerCase();
+
+  // Use admissions in the dashboard table so new admissions appear immediately.
+  if (this.admissions && this.admissions.length > 0) {
+    const filteredAdmissions = this.admissions.filter((item: any) => {
+      const studentId = (item.student_id ?? '').toString().toLowerCase();
+      const name = (item.name ?? '').toString().toLowerCase();
+      return studentId.includes(keyword) || name.includes(keyword);
+    });
+
+    return filteredAdmissions.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  const filteredData = this.itemData.filter(item =>
+    (item.personname || '').toLowerCase().includes(keyword)
   );
   const currentDate = new Date();
   const filteredAndPaginatedData = filteredData.filter(item => {
     const nextFollowUpDate = new Date(item.nextfollow_up_by);
     return (
-      nextFollowUpDate.getFullYear() === currentDate.getFullYear() && 
-      nextFollowUpDate >= new Date(currentDate.getFullYear(), currentDate.getMonth() - 1) && 
-      nextFollowUpDate <= new Date(currentDate.getFullYear(), currentDate.getMonth() + 2) 
+      nextFollowUpDate.getFullYear() === currentDate.getFullYear() &&
+      nextFollowUpDate >= new Date(currentDate.getFullYear(), currentDate.getMonth() - 1) &&
+      nextFollowUpDate <= new Date(currentDate.getFullYear(), currentDate.getMonth() + 2)
     );
   });
   return filteredAndPaginatedData.slice(startIndex, startIndex + this.itemsPerPage);
 }
   
 totalPages() {
-  return Array(Math.ceil(this.leadData.length / this.itemsPerPage)).fill(0).map((x, i) => i + 1);
+  const admissionsCount = this.admissions?.length || 0;
+  const rowsCount = admissionsCount > 0 ? admissionsCount : this.leadData.length;
+  return Array(Math.ceil(rowsCount / this.itemsPerPage)).fill(0).map((x, i) => i + 1);
 }
 
 onPrevPage() {
