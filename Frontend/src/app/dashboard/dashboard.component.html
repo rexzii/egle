@@ -443,28 +443,17 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngFor="let item of getCurrentPageData()" [ngStyle]="{'background-color': item.stage_color}">
-                                <td class="serial-number-text" style="font-weight: normal;">{{ item.serialNumber }}</td>
+                                                            <tr *ngFor="let item of getCurrentPageData(); let i = index">
+                                                                <td class="serial-number-text" style="font-weight: normal;">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                                 <td>{{ item.student_id }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.course_applying }}</td>
                                 <td>{{ item.academic_session }}</td>
-                                <!-- <td>{{ item.nextfollow_up_by | date:'dd-MM-yyyy' }}</td> -->
-                                <td>
-                                  <a [href]="'tel:' + item.contactno" style="color: black;">{{ item.contactno }}</a>
-                                </td>
-                                <td>{{ item.username }}</td>
-                                <td style="display: flex; cursor: pointer;">
-                                  <div class="actions">
-                                    <span class="material-symbols-outlined more-vert-icon">more_vert</span>
-                                    <div class="dropdown-content">
-                                      <a (click)="navigateToUpdateLead(item.lead_id, item.personname, item.email)" class="action" id="addLead">Add Followup</a>
-                                      <a (click)="openDeleteConfirmation(item.lead_id, username)" class="action" id="deleteLead">Lead Delete</a>
-                                      <a (click)="navigateToleadEdit(item.lead_id)" class="action" id="chatNow">Lead Edit</a>
-                                    </div>
-                                  </div>
-                                  <span class="las la-eye" (click)="navigateToViewLead(item.lead_id)" style="font-size: 25px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                  <span class="material-symbols-outlined" (click)="openWhatsApp(item.contactno)">chat</span>
+                                                                <td style="display: flex; gap: 8px; align-items: center; cursor: pointer;">
+                                                                    <button type="button" (click)="viewDetails(item.id)">View</button>
+                                                                    <button type="button" (click)="editAdmission(item.id)">Edit</button>
+                                                                    <button type="button" (click)="deleteAdmission(item.id)">Delete</button>
+                                                                    <button type="button" (click)="createReceipt(item.id)">Receipt</button>
                                 </td>
                               </tr>
                             </tbody>
