@@ -65,13 +65,15 @@ newstageName: string = '';
     this.initializeForm();
       this.loadAdmissions();
 
-      this.route.params.subscribe(params => {
-    if (params['id']) {
-      this.editMode = true;
-      this.editId = +params['id'];
-      this.loadAdmissionData(this.editId);
-    }
-  });
+      const routeEditId = this.route.snapshot.paramMap.get('id');
+      const queryEditId = this.route.snapshot.queryParamMap.get('edit_id');
+      const resolvedEditId = routeEditId || queryEditId;
+
+      if (resolvedEditId) {
+        this.editMode = true;
+        this.editId = +resolvedEditId;
+        this.loadAdmissionData(this.editId);
+      }
 
   }
 
@@ -458,7 +460,13 @@ formData.append('nextfollow_up_by', this.admissionForm.get('nextfollow_up_by')?.
       next: (response) => {
         console.log('Update Success:', response);
         alert('Admission updated successfully!');
-        this.router.navigate(['/admissions']); // Back to list
+        const queryParams = {
+          username: this.username,
+          company_code: this.company_code,
+          company_name: this.company_name,
+          user_right: this.user_right
+        };
+        this.router.navigate(['/dashboard', this.user_id], { queryParams });
       },
       error: (error) => {
         console.error('Update Error:', error);
