@@ -1,0 +1,213 @@
+package com.example.visitingcardscanner
+
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.visitingcardscanner.ui.theme.VisitingCardscannerTheme
+import androidx.compose.ui.unit.dp
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import java.io.IOException
+import androidx.compose.runtime.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            MainScreen()
+        }
+    }
+
+    @Composable
+    fun MainScreen() {
+        var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+        var personname by remember { mutableStateOf("") }
+        var contactno by remember { mutableStateOf("") }
+        var companyname by remember { mutableStateOf("") }
+        var address by remember { mutableStateOf("") }
+
+        var extractedText by remember { mutableStateOf("") } // ✅ Extracted Text ko Store karein
+
+        val imagePickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            selectedImageUri = uri
+        }
+
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp)
+        ) {
+            // ✅ Visiting Card Select Karne Ka Button
+            Button(onClick = { imagePickerLauncher.launch("image/*") }) {
+                Text("Select Visiting Card")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            selectedImageUri?.let { uri ->
+                val bitmap = getBitmapFromUri(uri)
+                bitmap?.let {
+                    Image(bitmap = it.asImageBitmap(), contentDescription = null)
+
+                    recognizeTextFromImage(it) { text ->
+                        extractedText = text // ✅ Extracted text ko store karein
+                    }
+                }
+            }
+
+            // ✅ Jab naye extracted text aaye tabhi parse karein
+            LaunchedEffect(extractedText) {
+                val parsedData = parseExtractedText(extractedText)
+                personname = parsedData.personname
+                contactno = parsedData.contactno
+                companyname = parsedData.companyname
+                address = parsedData.address
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // ✅ Editable Input Fields (Ab ye manually editable rahenge)
+            OutlinedTextField(value = personname, onValueChange = { personname = it }, label = { Text("personname") }, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(value = contactno, onValueChange = { contactno = it }, label = { Text("contactno") }, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(value = companyname, onValueChange = { companyname = it }, label = { Text("companyname") }, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(value = address, onValueChange = { address = it }, label = { Text("Address") }, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // ✅ Submit Button
+            Button(onClick = {
+                val parsedData = CardData(personname, contactno, companyname, address)
+                sendDataToServer(parsedData)
+            }) {
+                Text("Submit Data")
+            }
+        }
+    }
+
+    private fun getBitmapFromUri(uri: Uri): Bitmap? {
+        return try {
+            MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun recognizeTextFromImage(bitmap: Bitmap, onResult: (String) -> Unit) {
+        val image = InputImage.fromBitmap(bitmap, 0)
+        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+        recognizer.process(image)
+            .addOnSuccessListener { visionText ->
+                val extractedText = visionText.text
+                onResult(extractedText)
+
+                // ✅ Extracted Text को Parse करें
+//                val parsedData = parseExtractedText(extractedText)
+//
+//                // ✅ API Call to Send Data to Node.js Server
+//                sendDataToServer(parsedData)
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+                onResult("Failed to recognize text")
+            }
+    }
+
+    private fun parseExtractedText(text: String): CardData {
+        val lines = text.split("\n").map { it.trim() }.filter { it.isNotEmpty() }
+        var personname = ""
+        var contactno = "Unknown"
+        var companyname = ""
+        var address = ""
+
+        val contactnoRegex = Regex("\\+?\\d{10,}")
+        val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+        val websiteRegex = Regex("www\\.|https?://")
+        val personnameRegex = Regex("^[A-Za-z ]+$")
+
+        for (line in lines) {
+            when {
+                // ✅ personname Identification: Pehli non-numeric line ko personname maan lo
+                personname.isEmpty() && personnameRegex.matches(line) -> personname = line
+
+                // ✅ contactno Number Extraction: Agar line contactno number jaisa dikhe
+                contactno == "Unknown" && contactnoRegex.containsMatchIn(line) -> contactno = contactnoRegex.find(line)?.value ?: "Unknown"
+
+                // ✅ companyname personname: Agar line me email ya website nahi hai, toh companyname ho sakti hai
+                companyname.isEmpty() && !emailRegex.containsMatchIn(line) && !websiteRegex.containsMatchIn(line) -> companyname = line
+
+                // ✅ Address: Jo bhi bacha, usko address me daal do
+                else -> address += "$line\n"
+            }
+        }
+
+        return CardData(
+            personname = personname,
+            contactno = contactno,
+            companyname = companyname,
+            address = address.trim()
+        )
+    }
+
+    // ✅ API Call to Send Parsed Data
+    private fun sendDataToServer(cardData: CardData) {
+        val apiService = RetrofitClient.instance
+
+        apiService.sendCardData(cardData).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@MainActivity, "Data Sent Successfully", Toast.LENGTH_SHORT).show()
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("DEBUG", "Failed: $errorBody")
+                    Toast.makeText(this@MainActivity, "Failed: $errorBody", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("DEBUG", "Error: ${t.message}")
+                Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+}
+
+
