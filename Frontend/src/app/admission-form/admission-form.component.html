@@ -455,58 +455,29 @@
       </div>
     </div>
 
-    <div class="dInput" v-if="activeStage == 3">  
-             <div>
-              <label for="stage" class="stage">Stage*</label>
-              <div class="select-container" *ngIf="!showInput2">
-                <select formControlName="stage" name="stage" class="stage">
-                  <option>Select Stage</option>
-                  <option *ngIf="!stageData || stageData.length === 0" value="" disabled selected>Fill Master table initially</option>
-                  <option *ngFor="let stag of stageData" [value]="stag.stage_name">{{ stag.stage_name }}</option>
-                </select>
-                <div *ngIf="admissionForm.get('stage')?.invalid && admissionForm.get('stage')?.touched">
-                  <span class="error-text">Stage is required.</span>
-                </div>
-                <span class="plus-sign" (click)="toggleInput2()">+</span>
-              </div>
-              <div *ngIf="showInput2">
-                <input type="text" class="input-box" placeholder="Enter new stage" formControlName="stage_name" [(ngModel)]="newstageName">
-                <span class="material-symbols-outlined" (click)="submitStage()">send</span>
-                <span class="plus-sign" (click)="toggleInput2()">✕</span> 
-              </div>
-            </div>           
-            <div>
-              <label for="reminder_status" class="reminder_status">Reminder Status*</label>
-              <select type="text" formControlName="reminder_status" name="reminder_status" class="reminder_status">
-                <option>Select reminder</option>
-                <option *ngIf="!reminderData || reminderData.length === 0" value="" disabled selected>Fill Master table initially</option>
-                <option *ngFor="let reminder of reminderData" [value]="reminder.reminder_name">{{ reminder.reminder_name }}</option>
-              </select>
-              <div *ngIf="admissionForm.get('reminder_status')?.invalid && admissionForm.get('reminder_status')?.touched">
-                <span class="error-text">Reminder_status is required.</span>
-              </div>
-            </div>
-            
-          
-            
-          </div>
-          <div class="dInput" v-if="activeStage == 3" style="gap: 40px;">
-                 <div>
-              <label for="nextfollow_up_by" class="next-followup">Next Follow-up Date*</label>
-              <input type="date" formControlName="nextfollow_up_by" class="form-control" name="nextfollow_up_by" style="width: 200px;margin-left: 25px !important;">
-            </div>
-            <div *ngIf="admissionForm.get('nextfollow_up_by')?.invalid && admissionForm.get('nextfollow_up_by')?.touched">
-              <span class="error-text">Nextfollow_up_by is required.</span>
-            </div>
-            
-            <!-- <div style="margin-left: 23px;">
-              <label for="remark" class="remark">Remark*</label>
-              <textarea type="text" formControlName="remark" class="remark" name="remark" style="width: 200px;"></textarea>
-            </div>
-            <div *ngIf="admissionForm.get('remark')?.invalid && admissionForm.get('remark')?.touched">
-              <span class="error-text">Remark is required.</span>
-            </div>  -->
-          </div>
+    <div class="dInput" v-if="activeStage == 3" style="gap: 40px;">
+      <div>
+        <label for="reminder_status" class="reminder_status">Reminder Status*</label>
+        <select type="text" formControlName="reminder_status" name="reminder_status" class="reminder_status">
+          <option>Select reminder</option>
+          <option *ngIf="!reminderData || reminderData.length === 0" value="" disabled selected>Fill Master table initially</option>
+          <option *ngFor="let reminder of reminderData" [value]="reminder.reminder_name">{{ reminder.reminder_name }}</option>
+        </select>
+        <div *ngIf="admissionForm.get('reminder_status')?.invalid && admissionForm.get('reminder_status')?.touched">
+          <span class="error-text">Reminder_status is required.</span>
+        </div>
+      </div>
+
+      <div>
+        <label for="nextfollow_up_by" class="next-followup">Next Follow-up Date*</label>
+        <input type="date" formControlName="nextfollow_up_by" class="form-control" name="nextfollow_up_by" style="width: 200px;margin-left: 25px !important;">
+        <div *ngIf="admissionForm.get('nextfollow_up_by')?.invalid && admissionForm.get('nextfollow_up_by')?.touched">
+          <span class="error-text">Nextfollow_up_by is required.</span>
+        </div>
+      </div>
+    </div>
+
+    
 
     <div class="form-actions">
       <button type="button" class="btn-reset" (click)="resetForm()">Reset</button>

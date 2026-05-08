@@ -42,6 +42,7 @@ reminderData: any;
 showInput2: boolean = false;
 showInput3: boolean = false;
 newstageName: string = '';
+studentIdFromRoute: string = '';
 
   get workExperienceArray(): FormArray {
     return this.admissionForm.get('workExperience') as FormArray;
@@ -59,6 +60,7 @@ newstageName: string = '';
   this.company_code = queryParams['company_code'];
   this.company_name = queryParams['company_name'];
   this.user_right = queryParams['user_right'];
+  this.studentIdFromRoute = queryParams['student_id'] || '';
   }); 
  this.getstage(this.company_code);
   this.getreminder(this.company_code);
@@ -84,7 +86,7 @@ loadAdmissionData(id: number): void {
     const data = res.data;
     // Patch main form
     this.admissionForm.patchValue({
-      studentId: data.admission.student_id,
+      studentId: data.admission.student_id || this.studentIdFromRoute,
       rollNo: data.admission.roll_no,
       courseApplying: data.admission.course_applying,
       academicSession: data.admission.academic_session,

@@ -1032,14 +1032,15 @@ loadAdmissions(): void {
     this.router.navigate(['/admission_view', id]);
   }
 
-  editAdmission(id: number): void {
+  editAdmission(id: number, studentId?: string): void {
     if (this.user_id !== undefined && this.user_id !== null) {
       const queryParams = {
         username: this.username,
         company_code: this.company_code,
         company_name: this.company_name,
         user_right: this.user_right,
-        edit_id: id
+        edit_id: id,
+        student_id: studentId || ''
       };
       this.router.navigate(['/new-admission', this.user_id], { queryParams });
       return;
