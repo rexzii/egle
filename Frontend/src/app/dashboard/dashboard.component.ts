@@ -1029,10 +1029,23 @@ loadAdmissions(): void {
   }
 
   viewDetails(id: number): void {
-    this.router.navigate(['/admission', id]);
+    this.router.navigate(['/admission_view', id]);
   }
 
   editAdmission(id: number): void {
+    if (this.user_id !== undefined && this.user_id !== null) {
+      const queryParams = {
+        username: this.username,
+        company_code: this.company_code,
+        company_name: this.company_name,
+        user_right: this.user_right,
+        edit_id: id
+      };
+      this.router.navigate(['/new-admission', this.user_id], { queryParams });
+      return;
+    }
+
+    // Fallback route if user context is missing.
     this.router.navigate(['/admission/edit', id]);
   }
 
