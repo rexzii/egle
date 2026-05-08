@@ -3742,7 +3742,17 @@ nextfollow_up_by: req.body.nextfollow_up_by || null,
     db.query('INSERT INTO tb_followup SET ?', followupData, (err, followupResult) => {
         if (err) {
             console.error('Follow-up insert error:', err);
-            return db.rollback(() => res.status(500).json({ success: false, message: 'Failed to insert follow-up record' }));
+      return db.commit((commitErr) => {
+        if (commitErr) {
+          return db.rollback(() => res.status(500).json({ success: false, message: 'Commit failed' }));
+        }
+        res.status(201).json({
+          success: true,
+          message: 'Admission form submitted successfully',
+          admissionId: admissionId,
+          followupWarning: 'Follow-up record was not saved'
+        });
+      });
         }
 
         // 2. Commit the whole transaction

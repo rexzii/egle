@@ -451,7 +451,7 @@
                                 <td>{{ item.academic_session }}</td>
                                                                 <td style="display: flex; gap: 8px; align-items: center; cursor: pointer;">
                                                                     <button type="button" (click)="viewDetails(item.id)">View</button>
-                                                                    <button type="button" (click)="editAdmission(item.id)">Edit</button>
+                                                                      <button type="button" (click)="editAdmission(item.id, item.student_id)">Edit</button>
                                                                     <button type="button" (click)="deleteAdmission(item.id)">Delete</button>
                                                                     <button type="button" (click)="createReceipt(item.id)">Receipt</button>
                                 </td>
