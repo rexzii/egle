@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Dynamic Tile Background Form</title>
+</head>
+<body class="default">
+  <form class="form-container" [formGroup]="updatecustomerForm" (ngSubmit)="submit()">
+    <div class="form-header" style="text-align: center;">Issue Form</div>
+    <div class="form-group">
+      <!-- <label for="image" style="margin-right: 0px;padding-right: 0px;">Image</label>  -->
+      <img *ngIf="companyLogoUrl" [src]="companyLogoUrl" alt="Company Logo" width="90" height="65px">
+    </div>
+    <div class="form-group">
+      <label for="ticket_id">Ticket ID</label>
+      <input type="text" [value]="ticket_id" placeholder="ticket_id" required readonly />
+    </div>
+    <div class="form-group">
+      <label for="created_date">Issue Created Date</label>
+      <input type="text" formControlName="created_date" placeholder="created_date" required readonly />
+    </div>
+    <div class="form-group">
+      <label for="products">Products</label>
+      <input type="text" formControlName="products" placeholder="Select Your Products*" required readonly />
+    </div>
+    <div class="form-group">
+      <label for="mobileno">Mobile No.</label>
+      <input type="text" formControlName="mobileno" placeholder="Enter Your Mobile No*" required maxlength="10" (input)="onMobileInput($event)" readonly />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" formControlName="email" placeholder="Enter Your Email*" required readonly />
+      <div *ngIf="updatecustomerForm.get('email')?.invalid && updatecustomerForm.get('email')?.touched">
+        <small class="error-text">Please enter a valid email address (must be a Gmail address).</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="Description">Description</label>
+      <input type="text" formControlName="Description" placeholder="Description" required />
+    </div>
+    <div class="frm">
+      <label for="issue_solved"><b>Issue Solved</b></label>
+      <input type="radio" formControlName="issue_solved" value="yes" style="margin-right: 10px;">
+      <label for="yes" style="margin-right: 30px;">Yes</label>
+      <input type="radio" formControlName="issue_solved" value="no" style="margin-right: 10px;margin-left: 0px;">
+      <label for="no">No</label>
+    </div>   
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+  <div>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Issue Id</th>
+        <th>Ticket Id</th>
+        <th>Reg. Date</th>
+        <th>Reg. Time</th>
+        <th>Issue Solved</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let lead of leadData">
+      <td style="font-weight: normal;font-size: 12px;">{{ lead.issue_id }}</td> 
+      <td>{{ lead.ticket_id }}</td>
+      <td>{{ lead.reg_date | date:'dd-MM-yyyy' }}</td>
+      <td>{{ formatTime(lead.reg_time) }}</td>
+      <td>{{ lead.issue_solved }}</td>
+      <td>{{ lead.Description }}</td>
+    </tr>
+    </tbody>
+  </table> 
+</div>
+</body>
+</html>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,100 @@
+<html>
+<div class="folter-model">
+  <div class="modal-header">
+    <h2>Filter Modal</h2>
+    <button mat-icon-button (click)="closeDialog()" class="custom-button">
+       <mat-icon>close</mat-icon>
+    </button>
+  </div><br>
+  <div class="scrollable-modal-content">
+    <form style="padding: 10px;">
+      <h1 style=" width: 80px;padding-left: 20px;text-align: center;">Leads</h1>
+      <label>
+        <input type="radio" name="leadFilter" value="today" (change)="onChang($event)"> Today's Leads
+      </label>&nbsp;
+      <label>
+        <input type="radio" name="leadFilter" value="thisMonth" (change)="onChang($event)"> This Month's Leads
+      </label>&nbsp;
+      <label>
+        <input type="radio" name="leadFilter" value="all" (change)="onChang($event)"> All Leads
+      </label><br>
+    </form>
+    <table class="styled-table">
+       <thead>
+          <tr>
+            <th>Sr No.</th>
+            <th>lead_Id</th>
+            <th>Name</th>
+            <th>Company Name</th>
+            <th>Products</th>
+            <th>Stage</th>
+            <th>Next Follow-up Date</th>
+            <th>Contact No</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lead of filteredLeadData">
+             <td>{{ lead.serialNumber }}</td>
+             <td>{{ lead.lead_id }}</td>
+             <td>{{ lead.personname }}</td>
+             <td>{{ lead.companyname }}</td>
+             <td>{{ lead.products }}</td>
+             <td>{{ lead.stage }}</td>
+             <td>{{ lead.nextfollow_up_by | date: 'dd-MM-yyyy' }}</td>
+             <td>{{ lead.contactno }}</td>
+          </tr>
+          <tr *ngIf="filteredLeadData.length === 0">
+            <td colspan="8" style="text-align: center;"><b>No leads available</b></td>
+          </tr>
+        </tbody> 
+      </table><br><br>  
+  
+    <!-- Renewals filter and table -->
+    <form style="padding: 10px;">
+      <h1 style="width: 100px;">Renewals</h1>
+      <label>
+        <input type="radio" name="renewalFilter" value="today" (change)="onRenewalChange($event)"> Today's Renewal Follow Up
+      </label>&nbsp;
+      <label>
+        <input type="radio" name="renewalFilter" value="thisMonth" (change)="onRenewalChange($event)"> This Month's Renewal Follow Up
+      </label>&nbsp;
+      <label>
+        <input type="radio" name="renewalFilter" value="all" (change)="onRenewalChange($event)"> All Renewal Follow Up
+      </label><br>
+    </form>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Sr No.</th>
+          <th>lead_Id</th>
+          <th>Name</th>
+          <th>Company Name</th>
+          <th>Products</th>
+          <th>Stage</th>
+          <th>Next Follow-up Date</th>
+          <th>Contact No</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let renewal of filteredRenewalData">
+          <td>{{ renewal.serialNumber }}</td>
+          <td>{{ renewal.lead_id }}</td>
+          <td>{{ renewal.personname }}</td>
+          <td>{{ renewal.companyname }}</td>
+          <td>{{ renewal.products }}</td>
+          <td>{{ renewal.stage }}</td>
+          <td>{{ renewal.nextfollow_up_by | date: 'dd-MM-yyyy' }}</td>
+          <td>{{ renewal.contactno }}</td>
+        </tr>
+        <tr *ngIf="filteredRenewalData.length === 0">
+          <td colspan="8" style="text-align: center;"><b>No renewals available</b></td>
+        </tr>
+      </tbody> 
+    </table><br><br>  
+  </div>
+</div>
+</html>
+
+
+
+

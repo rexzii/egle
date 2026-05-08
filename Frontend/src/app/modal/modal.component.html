@@ -1,0 +1,13 @@
+<!-- modal.component.html -->
+<div class="modal" *ngIf="isModalVisible">
+    <div class="modal-content">
+      <!-- <h3 style="color: black;">Enter your Company Code To Nevigate Create Ticket Page</h3> -->
+      <input type="text" [(ngModel)]="companyCode" placeholder="Enter your Company Code" />
+      <div style="display: flex;align-items: center;margin-top: 20px;margin-left: 30px;">
+        <button (click)="submitCompanyCode()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button (click)="closeModal()">Cancel</button>
+      </div>
+     
+    </div>
+</div>
+  

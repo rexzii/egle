@@ -1,0 +1,109 @@
+<div *ngIf="userData">
+  <h3>Welcome, {{ userData.company_data.username }}</h3>
+  <!-- <p>Support ID: {{ userData.support_id }}</p> -->
+  <p>Company Code: {{ userData.company_data.company_code }}</p>
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Dynamic Tile Background Form</title>
+</head>
+<body class="default">
+<div>
+  <h1 style="margin-top: 20px;"><b>Welcome, {{ username }}({{ company_code }})</b></h1>
+</div>
+    <!-- <button (click)="nevigateenduser()">Enduser</button> -->
+<form class="form-container" [formGroup]="ticketForm" (ngSubmit)="submit()">
+  <div class="form-header" style="text-align: center;">New Ticket Form</div>
+  <div class="form-group">
+    <select formControlName="products" name="products" class="products" required >
+      <option class="option-grey">Select Products</option>
+      <option *ngIf="!productData || productData.length === 0" value="" disabled selected>Fill Master table initially</option>
+      <option *ngFor="let product of productData" [value]="product.product_name">{{ product.product_name }}</option>
+    </select>
+  </div> 
+  <div class="form-group">
+    <input type="text" formControlName="Description" placeholder="Problem Description*" required />
+  </div>
+  <div class="form-group">
+    <input type="text" formControlName="company_name" placeholder="Enter Your Company Name*" required />
+  </div>
+  <div class="form-group">
+    <input type="email" formControlName="email" placeholder="Enter Your Email*" required />
+    <div *ngIf="ticketForm.get('email')?.invalid && ticketForm.get('email')?.touched">
+      <small class="error-text">Please enter a valid email address (must be a Gmail address).</small>
+    </div>
+  </div>
+  <div class="form-group">
+    <input type="text" formControlName="mobileno" placeholder="Enter Your Mobile No*" required maxlength="10" (input)="onMobileInput($event)" />
+  </div>
+  <div class="form-group">
+    <input type="file" (change)="onFileSelected($event)" style=" color: #766f6f !important;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    appearance: none; 
+    -webkit-appearance: none; 
+    -moz-appearance: none; " />
+  </div>
+  <div class="form-group">
+    <input type="text" formControlName="remark" placeholder="Enter Remark" />
+  </div>
+  <button type="submit" class="submit-btn">Submit</button>
+</form> 
+<div>
+  
+<table class="styled-table">
+  <thead>
+    <tr>
+      <th>Ticket ID</th>
+      <!-- <th>Username</th> -->
+      <th>Company Code</th>
+      <th>Created Date</th>
+      <th>Created Time</th>
+      <th>Created By</th>
+      <th>Products</th>
+      <th>Description</th>
+      <th>Company Name</th> 
+      <th>Email</th> 
+      <th>Mobile No.</th>
+      <th>Remark</th>
+      <th>Action</th>
+   </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let lead of leadData">
+      <td>{{ lead.ticket_id }}</td>
+      <!-- <td>{{ lead.username }}</td> -->
+      <td>{{ lead.company_code }}</td>
+      <td>{{ lead.created_date | date:'dd-MM-yyyy' }}</td>
+      <td>{{ formatTime(lead.created_time) }}</td>
+      <td>{{ lead.created_by }}</td>
+      <td>{{ lead.products }}</td>
+      <td>{{ lead.Description }}</td>
+      <td>{{ lead.company_name }}</td>
+      <td>{{ lead.email }}</td>
+      <td>{{ lead.mobileno }}</td>
+      <td>{{ lead.remark }}</td>
+      <td><span class="las la-eye" (click)="navigateToViewticket(lead.ticket_id)" style="font-size: 25px;"></span></td>
+     </tr>
+  </tbody>
+</table>
+</div>
+  <script>
+    const body = document.body;
+    const categorySelect = document.getElementById("category");
+    categorySelect.addEventListener("change", () => {
+      body.className = "";
+      body.classList.add(categorySelect.value);
+    });
+  </script>
+</body>
+</html>
+
+  

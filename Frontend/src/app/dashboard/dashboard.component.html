@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>Admin Dashboard | Keyframe Effects</title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat Alternates' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        $(document).ready(function() {
+    // Toggle dropdown for both touch and click events
+    $('.more-vert-icon').on('click touchstart', function(e) {
+        e.preventDefault(); // Prevent default action
+        $(this).siblings('.dropdown-content').toggle(); // Toggle dropdown visibility
+    });
+
+    // Handle individual actions (for mobile as well)
+    $('#addLead').on('click touchstart', function(e) {
+        e.preventDefault();
+        console.log('Add Lead clicked');
+    });
+
+    $('#deleteLead').on('click touchstart', function(e) {
+        e.preventDefault();
+        console.log('Delete Lead clicked');
+    });
+
+    $('#chatNow').on('click touchstart', function(e) {
+        e.preventDefault();
+        console.log('Chat Now clicked');
+    });
+});
+
+    </script>
+    
+</head>
+<body>
+   <input type="checkbox" id="menu-toggle">
+    <div class="sidebar">
+        <div class="side-header">
+           <img src="{{path}}" alt="Image" style="width: 50px;"><br>
+          
+        </div><br>
+        <p style="color: #ffffff;font-size: 13px;padding-left: 38px;">Renewal Date <br> &nbsp;&nbsp;&nbsp;{{ expireDate | date: 'dd-MM-yyyy' }}</p>
+        <div class="side-content"><br>
+            <div class="side-menu">
+                <ul>
+                    <li style="cursor: pointer;">
+                        <a (click)="dash1()" class="active" >
+                            <span class="las la-home">&nbsp;<small style="font-size: 12px;">Dashboard</small></span>
+                        </a>
+                    </li>    
+                    <li style="cursor: pointer;">
+                        <a (click)="navigateToFamilyPage()" >
+                            <span class="las la-chart-bar">&nbsp;<small style="font-size: 12px;">Add Leads</small></span>      
+                         </a>
+                    </li>
+                    <li style="cursor: pointer;" *ngIf="company_code === '1001'">
+                        <a (click)="navigateToFaceboookpage()">
+                            <span class="fab fa-facebook">&nbsp;<small style="font-size: 12px;">FacebookLeads</small></span>
+                        </a>
+                    </li>
+                    
+                   <li *ngIf="company_code !== '1001'" style="cursor: pointer;">
+                       <a (click)="navigateTouser()">
+                           <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Add Users</small></span>
+                       </a>
+                   </li>
+                   <li *ngIf="company_code === '1001'" style="cursor: pointer;">
+                        <a  (click)="navigateTomanageuser()">
+                            <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Manage User</small></span>
+                            
+                         </a>
+                   </li>
+                    <!-- <li style="cursor: pointer;">
+                        <a  (click)="navigateToleadstatastics()">
+                            <span class="las la-chart-line">&nbsp;<small style="font-size: 12px;">Lead Statistics</small></span>
+                            
+                         </a>
+                    </li> -->
+                    <li style="cursor: pointer;">
+                        <a (click)="navigateTomasterentry()">
+                            <span class="las la-edit">&nbsp;<small style="font-size: 12px;">Master's Entry</small></span>
+                        </a>
+                    </li>
+                    <li *ngIf="user_right === 'super'" style="cursor: pointer;">
+                        <a (click)="navigateTotrashpage()">
+                            <span class="las la-trash-alt">&nbsp;<small style="font-size: 12px;">Trash Leads</small></span>
+                        </a>
+                    </li>
+                    <li style="cursor: pointer;">
+                        <a  (click)="navigateReportspage()">
+                            <span class="las las la-file-alt">&nbsp;<small style="font-size: 12px;">Reports</small></span>
+                         </a>
+                    </li>
+                    <li style="cursor: pointer;">
+                        <a (click)="navigatevisistingcardpage()">
+                            <span class="material-icons">qr_code_scanner
+                            <small style="font-size: 12px;">Card Scanning</small></span>
+                        </a>
+                    </li>                    
+                     <li style="cursor: pointer;">
+                        <a (click)="openModal()">
+                          <span class="las la-user-check">&nbsp;<small style="font-size: 12px;">Attendance</small></span>
+                        </a>
+                    </li> 
+                    <app-attendance-modal *ngIf="isModalOpen" (close)="isModalOpen = false"></app-attendance-modal>
+                  
+                    <li style="cursor: pointer;">
+                        <a (click)="logout()">
+                            <span class="las la-power-off">&nbsp;<small style="font-size: 12px;">Logout</small></span>
+                             
+                         </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="las la-question-circle">&nbsp;<small style="font-size: 12px;">Help</small></span>  
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">    
+        <header>
+            <div class="header-content">
+                <label for="menu-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+                <div class="user" style="cursor: pointer;" (click)="openUserPopup(user_id, username)">
+                    <div class="bg-img" *ngIf="user_right === 'super'" style="background-image: url(../assets/super1.png)"></div>
+                    <div class="bg-img" *ngIf="user_right === 'data-entry'" style="background-image: url(../assets/dataentry.png)"></div>
+                    <div class="bg-img" *ngIf="user_right === 'manager'" style="background-image: url(../assets/manager.png)"></div>
+                    <b style="padding-top: 9px;">
+                      Welcome {{ username | titlecase }}
+                      <p style="font-size: 12px;">{{ user_right }} User</p>
+                    </b>
+                  </div>
+                  <div *ngIf="showModal" class="modal">
+                    <div class="modal-content">
+                      <span class="close" (click)="closeModal()">&times;</span>
+                      <h2 style="text-align: center;"><b>{{username}}</b></h2>
+                      <form (ngSubmit)="submitUserForm()">
+                        <label for="password">Password:</label>
+                        <input type="{{ showPassword ? 'text' : 'password' }}" id="password" [(ngModel)]="modalData.password" name="password" required />
+                        <span class="toggle-password" (click)="togglePasswordVisibility()">
+                            <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                        </span>
+                        <button class="mit" type="submit">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                
+               <div class="header-menu">
+                    <div class="notify-icon" [ngClass]="{'has-notifications': notifications.length > 0}" (click)="showPopup = !showPopup">
+                        <span class="las la-bell" style="cursor: pointer;"></span>
+                        <span class="notify" style="color: red;font-weight: bold;">{{ notifications.length }}</span>
+                    </div>
+                    <app-notification-details  #notificationDetails [notification]="selectedNotification" 
+                         *ngIf="showPopup" (closePopup)="closePopup()">
+                    </app-notification-details>
+                    <div class="add">
+                        <button (click)="openFilterModal()">Filter</button>&nbsp;
+                        <button class="btn11" (click)="navigateToFamilyPage()">Add New</button>&nbsp;
+                        <button class="btn11" (click)="logout()"><span class="las la-power-off" style="color: #ffffff;"></span>Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="page-content">
+                <div class="analytics">
+                    <div class="card" (click)="openFilterModal1()">
+                        <div class="card-head">
+                            <h2>{{ todayLeadsCount }}</h2>
+                            <span class="las la-home"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Today's Follow-Up</small>
+                            <div class="card-indicator">
+                                <div class="indicator one" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card"  (click)="openFilterModal2()">
+                        <div class="card-head">
+                            <h2>{{ thisMonthLeadsCount }}</h2>
+                            <span class="las la-calendar"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>This Month</small>
+                            <div class="card-indicator">
+                                <div class="indicator five" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" (click)="openFilterModal3()">
+                        <div class="card-head">
+                            <h2>{{ nextMonthLeadsCount }}</h2>
+                            <span class="las la-calendar-plus"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Next Month</small>
+                            <div class="card-indicator">
+                                <div class="indicator two" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card"  (click)="openFilterModal4()">
+                        <div class="card-head">
+                            <h2>{{ pendingInvoiceCount }}</h2>
+                            <span class="las la-file-invoice-dollar"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Pending Invoice</small>
+                            <div class="card-indicator">
+                                <div class="indicator three" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card"  (click)="openFilterModal5()">
+                        <div class="card-head">
+                            <h2>{{ renewalsCount }}</h2>
+                            <span class="las la-retweet"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Renewals</small>
+                            <div class="card-indicator">
+                                <div class="indicator four" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div style="display:flex; justify-content: space-between;font-size: 14px;font-family: 'Montserrat', sans-serif;">
+                        <h3 style="margin: 0;"><b>This Month</b></h3>
+                        <select [(ngModel)]="selectedMonth" (change)="onChangeMonth($event)">
+                        <option value="01-2025">Jan, 2025</option>
+                        <option value="02-2025">Feb, 2025</option>
+                        <option value="03-2025">Mar, 2025</option>
+                        <option value="04-2025">Apr, 2025</option>
+                        <option value="05-2025">May, 2025</option>
+                        <option value="06-2025">Jun, 2025</option>
+                        <option value="07-2025">Jul, 2025</option>
+                        <option value="08-2025">Aug, 2025</option>
+                        <option value="09-2025">Sep, 2025</option>
+                        <option value="10-2025">Oct, 2025</option>
+                        <option value="11-2025">Nov, 2025</option>
+                        <option value="12-2025">Dec, 2025</option>
+                      </select>
+                    </div><br>
+                    <hr>
+                    <section  style="display: flex; justify-content: space-between; align-items: center;font-size: 13px;margin-top: 10px;">
+                        <div style="display: flex; align-items: center;cursor: pointer;">
+                          <img src="/assets/images.png" style="width: 17%;margin-right: 19px;">
+                          <div>
+                            <p style="margin-right: 0px; color: #72bbda; font-size: 13px;">New Leads</p>
+                            <p style="margin-bottom: 0; font-size: 15px;" *ngIf="leadCount !== undefined" (click)="openLeadDetails()"><b>{{ leadCount }}</b></p>
+                          </div>
+                        </div>
+                        <div *ngIf="leadCount !== undefined">
+                            <ng-container *ngIf="calculatePercentageDifference(leadCount) as percentageDifference">
+                                <div [ngStyle]="{'color': percentageDifference >= 0 ? '#00ff00' : '#fa5c7c'}">
+                                    <img [src]="percentageDifference >= 0 ? '/assets/up-arrow (1).png' : '/assets/up-arrow (2).png'" alt="arrow" style="width: 20px;">
+                                </div>
+                                <p style="margin: 0;" [ngStyle]="{'color': percentageDifference >= 0 ? '#00ff00' : '#fa5c7c'}">{{ percentageDifference }}%</p>
+                            </ng-container>
+                        </div>   
+                    </section><p style="font-size: 10px;text-align: end;"><b>Since last months</b></p>
+                    <hr>
+                    <section style="display: flex; justify-content: space-between; align-items: center;font-size: 13px;margin-top: 10px;cursor: pointer;">
+                        <div style="display: flex; align-items: center;">
+                          <img src="/assets/images__2_-removebg-preview.png" style="width: 15%;margin-right: 15px;">
+                          <div>
+                            <p style="margin-right: 0px;color: #ce00cf;">New Customers</p>
+                            <p style="margin-bottom: 0;font-size: 15px; cursor: pointer;" *ngIf="leadCount !== undefined" (click)="openLeadDetails()"><b>{{ leadCount }}</b></p>
+                          </div>
+                        </div>
+                        <div *ngIf="leadCount !== undefined">
+                            <ng-container *ngIf="calculatePercentageDifference(leadCount) as percentageDifference">
+                                <div [ngStyle]="{'color': percentageDifference >= 0 ? '#00ff00' : '#fa5c7c'}">
+                                <img [src]="percentageDifference >= 0 ? '/assets/up-arrow (1).png' : '/assets/up-arrow (2).png'" alt="arrow" style="width: 20px;">
+                                </div>
+                                <p style="margin: 0;" [ngStyle]="{'color': percentageDifference >= 0 ? '#00ff00' : '#fa5c7c'}">{{ percentageDifference }}%</p>
+                            </ng-container>
+                        </div>
+                      </section> 
+                      <p style="font-size: 10px;text-align: end;"><b>Since last months</b></p>
+                      <hr> 
+                </div>
+                <div *ngIf="showPopup1" class="modal1">
+                    <div class="modal-content1">
+                      <span class="closed" (click)="closePopup1()">&times;</span>
+                      <h3 style="text-align: center;color: #264796;"><b>Lead Details</b></h3>
+                      <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th style="padding: 5px;">Reg Date</th>
+                                <th style="padding: 5px;">Person Name</th>
+                                <th style="padding: 5px;">Company Name</th>
+                                <th style="padding: 5px;">Contact No.</th>
+                                <th style="padding: 5px;">Next Follow-up Date</th> 
+                                 <th style="padding: 5px;">Stage</th>
+                                <th style="padding: 5px;">Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let lead of leadDetails">
+                                <td style="font-weight: normal;padding: 5px;font-size: 12px;">{{ lead.reg_date }}</td>
+                                <td >{{ lead.personname }}</td>
+                                <td  style="padding: 2px;">{{ lead.companyname }}</td>
+                                <td  style="padding: 2px;">{{ lead.contactno }}</td>
+                                <td  style="padding: 2px;">{{ lead.nextfollow_up_by }}</td> 
+                                <td  style="padding: 2px;">{{ lead.stage }}</td>
+                                <td  style="padding: 2px;">{{ lead.remark }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                  </div>
+                  
+                <div class="box" style="font-size: 14px; font-family: 'Montserrat', sans-serif;">
+                    <h3><b>Lead Pipeline</b></h3>
+                    <div class="all-cards">
+                     <div class="pending" (click)="openDetails('Invoice Pending')">
+                        <div class="count" id="pending">0</div>
+                        <h5>Pending Invoice</h5>
+                    </div>
+                    <div class="pending1" (click)="openDetails('Verbal Discussion')"> 
+                        <div class="count" id="verbalCount">0</div>
+                        <h5>Verbal Discussion</h5>
+                    </div>
+                    <div class="pending2" (click)="openDetails('Quotation Followup')">
+                        <div class="count" id="QuotationCount">0</div>
+                        <h5>Quotation Followup</h5>
+                    </div>
+                     <div class="pending3" (click)="openDetails('Order Received')"> 
+                        <div class="count" id="ReceivedCount">0</div>
+                        <h5>Prices Shared</h5>
+                    </div>
+                    <div class="pending4" (click)="openDetails('Order Closed')"> 
+                        <div class="count" id="ClosedCount">0</div>
+                        <h5>Order Closed</h5>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="modals" [class.show]="showModals">
+                    <div class="modals-content">
+                        <span class="close1" (click)="closeModal1()">&times;</span>
+                        <h4 style="text-align: center;color: #264796;"><b>{{selectedStage}} Details</b></h4>
+                        <div class="modal-body">
+                            <table class="styled-table">
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 5px;">Person Name</th>
+                                        <th style="padding: 5px;">Follow-Up Time</th>
+                                        <th style="padding: 5px;">Next Follow-up Date</th> 
+                                        <th style="padding: 5px;">Stage</th>
+                                        <th style="padding: 5px;">Reminder</th>
+                                        <th style="padding: 5px;">Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let lead of stageDetails">
+                                        <td style="font-weight: normal;padding: 5px;">{{ lead.personname }}</td>
+                                        <td  style="padding: 5px;">{{ lead.follow_up_time }}</td>
+                                        <td  style="padding: 5px;">{{ lead.nextfollow_up_by }}</td> 
+                                        <td  style="padding: 5px;">{{ lead.stage }}</td>
+                                        <td  style="padding: 5px;">{{ lead.reminder_status }}</td>
+                                        <td  style="padding: 5px;">{{ lead.remark }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                          
+                <div class="box">
+                    <div style="display:flex; justify-content: space-between;font-size: 14px;font-family: 'Montserrat', sans-serif;">
+                        <h3 style="margin: 0;"><b>Lead Generation</b></h3>
+                        <span class="las la-download" (click)="downloadExcelFile()" style="background-color: cornflowerblue; border-radius: 10px;height: 5vh;padding: 5px;"></span>
+                      </div>
+                    <canvas id="leadsChart" class="graph"></canvas>
+                    <div class="chart-footer">
+                        <div class="footer-content">
+                        </div>
+                      </div>
+                    </div>
+
+                  <div class="box">
+                    
+                    <div style="display:flex; justify-content: space-between;font-size: 14px;font-family: 'Montserrat', sans-serif;">
+                        <h3 style="margin-bottom: 10px;"><b>Lead By Source</b></h3>
+                        <span class="las la-download" id="downloadExcelButton" style="background-color: cornflowerblue; border-radius: 10px;height: 5vh;padding: 5px;"></span>
+                    </div>
+                    <div class="pie">
+                    <div id="chartContainer" >
+                        <canvas id="leadPieChart"></canvas>
+                    </div> 
+                </div>  
+                </div><br>  <br>  <br>  
+                <div class="records table-responsive">
+                    <div class="record-header"> 
+                        <div class="add" >
+                            <span style="font-size: 13px;">Show</span>
+                          <select type="text"  name="sort_by" (change)="onEntriesChange($event)" style="height: 20px;width: 60px;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                          </select>
+                          <span style="font-size: 13px;">Entries</span>
+                       </div>
+                       <div class="add">
+                        <span style="font-size: 13px;">Search:</span>
+                        <input type="text" name="search" [(ngModel)]="searchKeyword">
+                       </div>  
+                    </div>
+                     <div>
+                        <table class="styled-table">
+                            <thead>
+                              <tr>
+                                <th>Sr No.</th>
+                                <th>Student Id</th>
+                                <th>Name</th>
+                                <th>Course Apply</th>
+                                <th>Academic Session</th>
+                                <!-- <th>Next Follow-up Date</th>
+                                <th>Contact No</th>
+                                <th>Lead By</th> -->
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of getCurrentPageData()" [ngStyle]="{'background-color': item.stage_color}">
+                                <td class="serial-number-text" style="font-weight: normal;">{{ item.serialNumber }}</td>
+                                <td>{{ item.student_id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.course_applying }}</td>
+                                <td>{{ item.academic_session }}</td>
+                                <!-- <td>{{ item.nextfollow_up_by | date:'dd-MM-yyyy' }}</td> -->
+                                <td>
+                                  <a [href]="'tel:' + item.contactno" style="color: black;">{{ item.contactno }}</a>
+                                </td>
+                                <td>{{ item.username }}</td>
+                                <td style="display: flex; cursor: pointer;">
+                                  <div class="actions">
+                                    <span class="material-symbols-outlined more-vert-icon">more_vert</span>
+                                    <div class="dropdown-content">
+                                      <a (click)="navigateToUpdateLead(item.lead_id, item.personname, item.email)" class="action" id="addLead">Add Followup</a>
+                                      <a (click)="openDeleteConfirmation(item.lead_id, username)" class="action" id="deleteLead">Lead Delete</a>
+                                      <a (click)="navigateToleadEdit(item.lead_id)" class="action" id="chatNow">Lead Edit</a>
+                                    </div>
+                                  </div>
+                                  <span class="las la-eye" (click)="navigateToViewLead(item.lead_id)" style="font-size: 25px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                  <span class="material-symbols-outlined" (click)="openWhatsApp(item.contactno)">chat</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          
+
+                        
+                    </div><br>    
+                    <div class="table-pagination">
+                        <table class="styled-table">
+                        </table>
+                        <div class="pagination">
+                            <button class="prev-next" (click)="onPrevPage()" [disabled]="currentPage === 1">Previous</button>
+                            <div class="page-numbers">
+                                <button *ngFor="let page of totalPages()" (click)="onPageChange(page)" [class.active]="currentPage === page">
+                                    {{ page }}
+                                </button>
+                            </div>
+                            <button class="prev-next" (click)="onNextPage()" [disabled]="currentPage === totalPages().length">Next</button>
+                        </div>
+                    </div><br> 
+                      
+                
+
+  
+
+</div>
+            </div>    
+        </main> 
+        
+         <!-- <div class="container">
+  <h2>Admission Applications</h2>
+  <div *ngIf="loading">Loading...</div>
+  <table class="table" *ngIf="!loading">
+    <thead>
+      <tr><th>ID</th><th>Student ID</th><th>Name</th><th>Course</th><th>Session</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of admissions">
+        <td>{{ item.id }}</td>
+        <td>{{ item.student_id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.course_applying }}</td>
+        <td>{{ item.academic_session }}</td>
+        <td>
+          <button (click)="viewDetails(item.id)">View</button>
+          <button (click)="editAdmission(item.id)">Edit</button>
+          <button (click)="deleteAdmission(item.id)">Delete</button>
+          <button (click)="createReceipt(item.id)">Receipt</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+    </div>
+</body>
+</html>
+
+
+
+
+
+

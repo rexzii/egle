@@ -1,0 +1,36 @@
+<!-- Dialog content here -->
+<div class="scrollable-modal-content">
+  <div class="modal-header">
+    <h2>This Month Leads</h2>
+    <button mat-icon-button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Company Name</th>
+        <th>Products</th>
+        <th>Stage</th>
+        <th>Next Follow-up Date</th>
+        <th>Contact No</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lead of filteredLeadData">
+        <td>{{ lead.personname }}</td>
+        <td>{{ lead.companyname }}</td>
+        <td>{{ lead.products }}</td>
+        <td>{{ lead.stage }}</td>
+        <td>{{ lead.nextfollow_up_by | date: 'dd-MM-yyyy' }}</td>
+        <td>{{ lead.contactno }}</td>
+      </tr>
+      <tr *ngIf="filteredLeadData.length === 0">
+        <td colspan="8" style="text-align: center;"><b>No leads Available</b></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br>

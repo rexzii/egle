@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+body {
+    background-size: cover; /* This property ensures that the background image covers the entire screen */
+    background-position: center; /* Center the background image */
+    height: 100vh; /* Set the body height to full viewport height */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Use flex to center the content vertically and horizontally */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    font-family: 'Montserrat', sans-serif; 
+}
+.login-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+.remember-me{
+    display: flex;
+}
+.remember-me input{
+    width: 30px;
+}
+
+img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+h2 {
+    /* margin-top: 10px; */
+    color: #333;
+    font-family: 'Montserrat', sans-serif; 
+    font-weight: bold;
+}
+
+p {
+    color: #666;
+}
+
+select,
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+
+        select {
+            margin-bottom: 5px;
+        }
+
+        input:focus,
+        select:focus {
+            border-bottom: 2px solid #3498db;
+        }
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+.password-wrapper {
+    position: relative;
+    
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Adjust this value to your desired distance from the right edge */
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+input[type="password"] {
+    padding-right: 30px; /* Adjust this value to make room for the icon */
+}

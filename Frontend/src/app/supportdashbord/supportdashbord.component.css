@@ -1,0 +1,283 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center; 
+  margin: 0;
+  height: 150vh; 
+  background: repeating-linear-gradient(45deg, #e6e6e6, #e6e6e6 25px, #ffffff 25px, #ffffff 50px);
+}
+
+select {
+  color: #766f6f !important;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  appearance: none; 
+  -webkit-appearance: none; 
+  -moz-appearance: none; 
+}
+
+select option {
+  color: #766f6f !important;
+}
+
+
+.form-container {
+  width: 90%;
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin-top: 20px; /* Add margin for spacing between form and table */
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-left: 5px;
+}
+
+.styled-table th, .styled-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.styled-table th {
+  background-color: #f2f2f2;
+}
+
+.styled-table tr:hover {
+  background-color: #f5f5f5;
+}
+    /* Default background */
+    body.default {
+      background: repeating-linear-gradient(
+        45deg,
+        #e6e6e6,
+        #e6e6e6 25px,
+        #ffffff 25px,
+        #ffffff 50px
+      );
+    }
+
+    /* Floor tile background */
+    body.floor {
+      background: repeating-linear-gradient(
+        90deg,
+        #ffe4b2,
+        #ffe4b2 20px,
+        #ffcc99 20px,
+        #ffcc99 40px
+      );
+    }
+
+    /* Wall tile background */
+    body.wall {
+      background: repeating-linear-gradient(
+        45deg,
+        #b3d9ff,
+        #b3d9ff 30px,
+        #80c1ff 30px,
+        #80c1ff 60px
+      );
+    }
+
+    /* Roof tile background */
+    body.roof {
+      background: repeating-linear-gradient(
+        0deg,
+        #ffb3b3,
+        #ffb3b3 25px,
+        #ff9999 25px,
+        #ff9999 50px
+      );
+    }
+
+    .form-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .error-text {
+      color: red;
+      font-size: 12px;
+    }
+    @media screen and (max-width: 768px) {
+      .styled-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    
+      .styled-table thead {
+        display: none; 
+      }
+    
+      .styled-table tbody {
+        display: block;
+        width: 100%;
+      }
+      
+      .styled-table tbody td {
+          padding: 3px 2.5rem 3px 2.5rem;
+          color: #444;
+      }
+    
+      .styled-table td {
+        display: block;
+        text-align: left;
+        font-size: 14px;
+        padding: 150px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+  
+      }
+    
+      .styled-table tr {
+        border-bottom: 6px solid #908888; 
+        margin-bottom: 60px;
+        padding-bottom: 60px;
+        border-top: 6px solid #908888; 
+      }
+          
+      .styled-table td::before {
+        content: ''; 
+        display: inline-block;
+         width: 98px;
+        vertical-align: middle;
+        
+      }
+      .styled-table td:nth-child(1)::before {
+          content: "\e7fd"; 
+          font-family: 'Material Icons';
+          margin-right: 8px;
+      }
+    
+      .styled-table td:nth-child(2)::before {
+        content: "\e8c4"; 
+        font-family: 'Material Icons';
+      }
+      
+      .styled-table td:nth-child(3)::before {
+        content: "\e935";    
+        font-family: 'Material Icons';
+      }
+      
+      .styled-table td:nth-child(4)::before {
+        content: "\e1b6"; 
+        font-family: 'Material Icons';
+      }
+      
+      .styled-table td:nth-child(5)::before {
+        content: "\e7fd"; 
+        font-family: 'Material Icons';
+      }
+      
+      .styled-table td:nth-child(6)::before {
+        content: "\e8ad"; 
+        font-family: 'Material Icons';
+      }
+    
+      .styled-table td:nth-child(7)::before {
+        content: "\e87f";  
+        font-family: 'Material Icons';
+    }
+    
+      .styled-table td:nth-child(8)::before {
+        content: "\e0af";  
+        font-family: 'Material Icons';
+    }      
+    
+      .styled-table td:nth-child(9)::before {
+        content: "\e0be";
+        font-family: 'Material Icons';
+      }
+      
+      .styled-table td:nth-child(10)::before {
+        content: "\e0b0";
+        font-family: 'Material Icons';
+      }
+
+      .styled-table td:nth-child(11)::before {
+        content: "\e0b9";  /* Unicode for 'comment' icon */
+        font-family: 'Material Icons';
+    }
+    
+      
+      .styled-table td:nth-child(12)::before {
+        content: "\e8b8";
+        font-family: 'Material Icons';
+      }
+      .styled-table td .actions {
+        display: inline-flex; 
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0px;
+      }
+    
+      .styled-table td .actions .material-symbols-outlined,
+      .styled-table td .actions .las {
+        font-size: 20px;
+        cursor: pointer;
+      }
+  
+      .serial-number-text {
+          display: none !important;
+      }
+  
+    }  
+  

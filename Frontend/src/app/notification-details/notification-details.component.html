@@ -1,0 +1,31 @@
+
+<div class="popup">
+  <div class="popup-content">
+    <img src="/assets/imageswatch.png" style="width: 15%;background-color: white;border-radius: 30px;"><br>
+    <h3 style="text-align: center;"><b>Today's Reminder</b></h3>
+    <div class="styled-table-wrapper">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Next Followup Date</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notification of notifications">
+          <!-- <td>{{ notification.lead_id}}</td> -->
+          <td (click)="navigateToUpdateLead(notification.lead_id, notification.personname, notification.email)"   style="cursor: pointer;">{{ notification.personname }}</td>
+          <td>{{ notification.nextfollow_up_by  }}</td>
+          <td>{{ convertTo12HourFormat(notification.follow_up_time) }}</td>
+        </tr>
+        <tr *ngIf="notifications.length === 0">
+          <td colspan="4" style="text-align: center;"><b>No Today's Reminder</b></td>
+        </tr>
+      </tbody>
+    </table> 
+    </div>
+    <hr/>
+    <button class="btn" (click)="closePopup.emit()">Close</button>
+  </div>
+</div>

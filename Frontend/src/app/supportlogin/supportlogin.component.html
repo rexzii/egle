@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Login Form</title>
+</head>
+<body style="background-image: url('../assets/loginback.jpg');">
+<div class="login-container">
+  <!-- <img src="../assets/logincrm.png" alt="Logo"> -->
+  <h1><b>Sign In</b></h1>
+<form [formGroup]="loginForm" class="form" (ngSubmit)="login()">
+  <input type="number" formControlName="contactno" name="contactno" placeholder="Mobile Number" required>
+
+  <div class="password-wrapper">
+    <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="password" name="password" placeholder="Password" required>
+    <span class="toggle-password" (click)="togglePasswordVisibility()">
+      <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+    </span>
+  </div>
+
+  <button type="submit">Log In</button>
+  <p>Don't have an account? <a href="/supportregistration">Register here</a></p>
+</form>
+
+</div>
+</body>
+</html>
+

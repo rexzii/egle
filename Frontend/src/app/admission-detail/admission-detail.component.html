@@ -1,0 +1,59 @@
+<div class="detail-container" *ngIf="!loading">
+  <h2>Admission Details</h2>
+  <div class="section">
+    <h3>Personal Information</h3>
+    <p><strong>Student ID:</strong> {{ admission.student_id }}</p>
+    <p><strong>Roll No:</strong> {{ admission.roll_no }}</p>
+    <p><strong>Name:</strong> {{ admission.name }}</p>
+    <p><strong>Date of Birth:</strong> {{ admission.date_of_birth }}</p>
+    <p><strong>Gender:</strong> {{ admission.gender }}</p>
+    <p><strong>Nationality:</strong> {{ admission.nationality }}</p>
+    <p><strong>Category:</strong> {{ admission.category }}</p>
+    <p><strong>Mobile:</strong> {{ admission.mobile }}</p>
+    <p><strong>Email:</strong> {{ admission.email }}</p>
+  </div>
+
+  <div class="section">
+    <h3>Address</h3>
+    <p><strong>Permanent:</strong> {{ admission.permanent_address }}, {{ admission.permanent_city }}, {{ admission.permanent_state }} - {{ admission.permanent_pin }}</p>
+    <p><strong>Correspondence:</strong> {{ admission.correspondence_address }}, {{ admission.correspondence_city }}, {{ admission.correspondence_state }} - {{ admission.correspondence_pin }}</p>
+  </div>
+
+  <div class="section">
+    <h3>Academics</h3>
+    <table class="table">
+      <thead><tr><th>Qualification</th><th>Year</th><th>Institution</th><th>Percentage</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let qual of academic">
+          <td>{{ qual.qualification_level }}</td>
+          <td>{{ qual.year_of_passing }}</td>
+          <td>{{ qual.institution }}</td>
+          <td>{{ qual.percentage }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section" *ngIf="work.length">
+    <h3>Work Experience</h3>
+    <table class="table">
+      <thead><tr><th>Organization</th><th>Designation</th><th>Duration</th><th>Years</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let w of work">
+          <td>{{ w.organization }}</td>
+          <td>{{ w.designation }}</td>
+          <td>{{ w.duration }}</td>
+          <td>{{ w.years_of_exp }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>Payment & Declaration</h3>
+    <p><strong>Fee Mode:</strong> {{ admission.fee_mode }}</p>
+    <p><strong>Declaration Name:</strong> {{ admission.declaration_name }}</p>
+    <p><strong>Date:</strong> {{ admission.declaration_date }}</p>
+  </div>
+</div>
+<div *ngIf="loading">Loading...</div>

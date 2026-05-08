@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>Admin Dashboard | Keyframe Effects</title>
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<input type="checkbox" id="menu-toggle">
+<div class="sidebar">
+    <div class="side-header">
+      <img src="{{path}}" alt="Image" style="width: 50px;">
+    </div><br>
+    <p style="color: #ffffff;font-size: 13px;padding-left: 38px;">Renewal Date <br> &nbsp;&nbsp;&nbsp;{{ expireDate | date: 'dd-MM-yyyy' }}</p>
+    <div class="side-content">
+      <div class="side-menu">
+        <ul>
+          <li style="cursor: pointer;">
+            <a (click)="dash1()"  >
+              <span class="las la-home">&nbsp;<small style="font-size: 12px;">Dashboard</small></span>
+            </a>
+          </li>    
+          <li style="cursor: pointer;">
+            <a (click)="navigateToFamilyPage()">
+              <span class="las la-chart-bar">&nbsp;<small style="font-size: 12px;" >Add Leads</small></span>      
+            </a>
+          </li>
+          <li style="cursor: pointer;" *ngIf="company_code === '1001'">
+            <a (click)="navigateToFaceboookpage()" >
+                <span class="fab fa-facebook">&nbsp;<small style="font-size: 12px;">FacebookLeads</small></span>      
+             </a>
+         </li>
+          <li *ngIf="company_code !== '1001'" style="cursor: pointer;">
+            <a  (click)="navigateTouser()" class="active">
+              <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Add Users</small></span>    
+            </a>
+          </li>
+          <li *ngIf="company_code === '1001'" style="cursor: pointer;">
+            <a  (click)="navigateTomanageuser()">
+                <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Manage User</small></span>   
+             </a>
+         </li>
+          <!-- <li style="cursor: pointer;">
+            <a  (click)="navigateToleadstatastics()">
+              <span class="las la-chart-line">&nbsp;<small style="font-size: 12px;">Lead Statistics</small></span>
+            </a>
+          </li> -->
+          <li style="cursor: pointer;">
+            <a (click)="navigateTomasterentry()">
+              <span class="las la-edit">&nbsp;<small style="font-size: 12px;">Master's Entry</small></span>
+            </a>
+          </li>
+          <li *ngIf="user_right === 'super'" style="cursor: pointer;">
+            <a (click)="navigateTotrashpage()">
+                <span class="las la-trash-alt">&nbsp;<small style="font-size: 12px;">Trash Leads</small></span>
+            </a>
+        </li>
+          <li style="cursor: pointer;">
+            <a  (click)="navigateReportspage()">
+              <span class="las las la-file-alt">&nbsp;<small style="font-size: 12px;">Reports</small></span>
+            </a>
+          </li> 
+
+          <li style="cursor: pointer;">
+            <a (click)="navigatevisistingcardpage()">
+                <span class="material-icons">qr_code_scanner
+                <small style="font-size: 12px;">Card Scanning</small></span>
+            </a>
+        </li>
+        
+           <li style="cursor: pointer;">
+            <a (click)="openModal()">
+              <span class="las la-user-check">&nbsp;<small style="font-size: 12px;">Attendance</small></span>
+            </a>
+          </li>
+          
+          <app-attendance-modal *ngIf="isModalOpen" (close)="isModalOpen = false"></app-attendance-modal>
+          <li style="cursor: pointer;">
+            <a (click)="logout()">
+              <span class="las la-power-off">&nbsp;<small style="font-size: 12px;">Logout</small></span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <span class="las la-question-circle">&nbsp;<small style="font-size: 12px;">Help</small></span>   
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+    
+<div class="main-content">    
+  <header>
+    <div class="header-content">
+      <label for="menu-toggle">
+        <span class="las la-bars"></span>
+      </label>
+      <div class="user" style="cursor: pointer;" (click)="openUserPopup(user_id, username)">
+        <div class="bg-img" *ngIf="user_right === 'super'" style="background-image: url(../assets/super1.png)"></div>
+        <div class="bg-img" *ngIf="user_right === 'data-entry'" style="background-image: url(../assets/dataentry.png)"></div>
+        <div class="bg-img" *ngIf="user_right === 'manager'" style="background-image: url(../assets/manager.png)"></div>
+        <b style="padding-top: 9px;">
+          Welcome {{ username | titlecase }}
+          <p style="font-size: 12px;">{{ user_right }} User</p>
+        </b>
+      </div>
+      <div *ngIf="showModal" class="modal">
+        <div class="modal-content">
+          <span class="close" (click)="closeModal()">&times;</span>
+          <h2 style="text-align: center;"><b>{{username}}</b></h2>
+          <form (ngSubmit)="submitUserForm()">
+            <label for="password">Password:</label>
+            <input type="{{ showPassword ? 'text' : 'password' }}" id="password" [(ngModel)]="modalData.password" name="password" required />
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+                <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </span>
+            <button class="mit" type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="header-menu" style="margin-left: 10px;">
+        <div class="add" style="margin-right: 0px;">
+          <button (click)="logout()"><span class="las la-power-off" style="color: #ffffff;"></span>Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>   
+  <main>
+    <div class="page-content">
+      <div class="three-button">
+        <!-- <button type="button" class="company" (click)="handleAddCompanyDetailsButtonClick()">Add Company Details</button> -->
+        <button type="button" class="add-user" (click)="handleAddUsersButtonClick()">Add Users</button>
+        <button type="button" class="manage-user" (click)="handleManageUserButtonClick()">Show Users</button>
+      </div>
+      <div id="registrationFormSection" style="display: none;">
+        <h2 style="text-align: center;margin-top: 20px;"><b>User Registration</b></h2>
+        <div class="records table-responsive">
+        <div class="record-header">
+        <form [formGroup]="registerForm" class="form" (ngSubmit)="onSubmit()">
+          <div class="dInput">
+            <div>
+              <label for="username">Username*</label>
+              <input type="text" class="form-control" formControlName="username" name="username" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" class="form-control" formControlName="email" name="email" >
+            </div>
+            <div>
+              <label for="password">Password*</label>
+              <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="password" class="form-control" name="password" maxlength="10" required>
+              <span class="toggle-password1" (click)="togglePasswordVisibility()">
+                <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </span>
+            </div>
+          </div>
+          <div class="dInput" v-if="activeStage == 3">
+            <div>
+              <label for="active">Active*</label>
+              <select type="text" formControlName="active" name="active" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>   
+            <div>
+              <label for="user_right">User Right*</label>
+              <select formControlName="user_right" name="user_right">
+                <option value="" selected disabled>Select Stage</option>
+                <option value="super">Super</option>
+                <option value="manager">Manager</option>
+                <option value="data-entry">Data Entry</option>
+              </select>
+            </div></div><br>
+            <div class="dInput" v-if="activeStage == 3" *ngIf="user_right === 'manager'">
+               <div *ngIf="loading"><p>Loading...</p></div>
+               <div *ngIf="errorMessage"><p style="color: red;">{{ errorMessage }}</p></div>
+               <div *ngIf="!loading && !errorMessage">
+                  <h3 style="text-align: center;margin-left: 390px;"><b>Create Your Team</b></h3>
+               <table class="styled-table" style="margin-left: 195px;">
+               <thead>
+               <tr>
+               <th>Username</th>
+               <th>Reg-Date</th>
+               <th>User Right</th>
+               <th style="width: 1%;padding: 0px;">Action</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr *ngFor="let user of userRights">
+               <td style="font-weight: normal;font-size: 13px;">{{ user.username }}</td>
+               <td>{{ user.reg_date | date:'dd-MM-yyyy' }}</td>
+               <td>{{ user.user_right }}</td>
+               <td style="width: 1%;padding: 0px;">
+               <input type="checkbox" (change)="onCheckboxChange(user.user_id, $event)" style="margin: 0px;">
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div><br>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <button type="submit" style="background-color: #264796;">Submit</button>
+  </div><br><br><br>
+  </form>
+  </div>
+  </div>
+  </div>
+  </div>  
+</main> 
+  <div class="page-content">
+    <div id="companyRegistrationFormSection" style="display: none;">
+      <h2 style="text-align: center;margin-top: 0px;"><b>Company Registration</b></h2>
+      <div class="records table-responsive">
+        <div class="record-header">
+          <form [formGroup]="companyForm" class="form" (ngSubmit)="Submit()">
+            <div class="dInput">
+              <div>
+                <label for="company_name">Company Name</label>
+                <input type="text" formControlName="company_name" class="form-control" required>
+              </div>
+              <div>
+                <label for="company_email">Company Email</label>
+                <input type="email" formControlName="company_email" class="form-control" required>
+              </div>
+              <div>
+                <label for="company_mobile_no">Mobile No</label>
+                <input type="tel" formControlName="company_mobile_no" class="form-control" maxlength="10" required>
+              </div>
+            </div>
+            <div class="dInput">
+              <div>
+                <label for="company_address">Company Address</label>
+                <input type="text" formControlName="company_address" class="form-control" required>
+              </div>
+              <div>
+                <label for="payment">payment</label>
+                <input type="number" formControlName="payment" class="form-control" required>
+              </div>
+              <div>
+                <label for="total_user">Total User</label>
+                <input type="number" formControlName="total_user" class="form-control" required>
+              </div>
+            </div>
+            <div class="dInput" v-if="activeStage == 3">
+              <div>
+                <label for="contact_person">Contact Person</label>
+                <input type="text" formControlName="contact_person" class="form-control" required>
+              </div>
+              <div>
+                <label class="whatsapp_count">Whatsapp Count</label>
+                <input type="number" formControlName="whatsapp_count" class="form-control" required>
+              </div>
+              <div>
+                <label class="profile">Profile</label>
+                <input type="text" formControlName="profile" class="form-control" required>
+              </div>
+            </div>
+            <div class="dInput" v-if="activeStage == 3">
+              <div>
+              <label for="company_logo">Company Logo:</label>
+              <input type="file" accept="image/*" name="company_logo" id="company_logo" formControlName="company_logo" (change)="fileChangeHandler($event)">
+            </div>  
+          </div>
+          <br>
+          <div style="display: flex; justify-content: center; align-items: center;">
+            <button type="submit" style="background-color: #264796;">Register</button>
+          </div> 
+        </form>
+      </div>
+    </div>
+  </div><br><br>
+</div> 
+<div class="page-content">  
+  <div id="userDetailButtonsDiv" style="display: none;">
+    <h2 style="text-align: center;"><b>Company Details</b></h2>
+      <div class="records table-responsive">
+        <div class="record-header">
+          <table class="styled-table">
+             <thead>
+                <tr>
+                  <th>Reg Date</th>
+                  <th>Expire Date</th>
+                  <th>Company Code</th>
+                  <th>Comapny Name</th>
+                  <th>Company Email</th>
+                  <th>Contact No.</th>
+                  <th>Address</th> 
+                  <th>Total User</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let lead of leadData">
+                    <td style="font-weight: normal;font-size: 12px;">{{ lead.reg_date | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ lead.expire_date | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ lead.company_code}}</td>
+                    <td>{{ lead.company_name }}</td>
+                    <td>{{ lead.company_email }}</td>
+                    <td>{{ lead.company_mobile_no }}</td>
+                    <td>{{ lead.company_address }}</td>
+                    <td><button class="doubleUnderline" (click)="showCompanyUsers(lead.company_code)" (click)="showPopup = !showPopup">{{ lead.total_user }}</button></td>
+                    <app-user-details-modal *ngIf="showPopup" [companyUsers]="companyUsers"  (closePopup)="closePopup()"></app-user-details-modal>
+                   </tr>
+                </tbody>
+            </table><br><br>
+     </div></div>
+</div></div> <br><br><br><br>  
+</div>
+<script src="dashboard.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,16 @@
+<div class="upload-container">
+  <h1>Upload Visiting Card</h1>
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="onUpload()" [disabled]="!file">Upload</button>
+  <div *ngIf="errorMessage" class="error">
+    <p>{{ errorMessage }}</p>
+  </div>
+  <div *ngIf="result" class="card-details">
+    <h2>Card Details:</h2>
+    <p><strong>Name:</strong> {{ result.name }}</p>
+    <p><strong>Company:</strong> {{ result.company }}</p>
+    <p><strong>Email:</strong> {{ result.email }}</p>
+    <p><strong>Phone:</strong> {{ result.phone }}</p>
+    <p><strong>Address:</strong> {{ result.address }}</p>
+  </div>
+</div>

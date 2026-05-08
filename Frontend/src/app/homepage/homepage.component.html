@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> 
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|Poppins"> -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Customer Relationship Management System</title>
+    <script>
+       menuToggle = document.querySelector('.menu-toggle');
+       const navbar = document.querySelector('.navbar');
+       menuToggle.addEventListener('click', () => {
+       navbar.classList.toggle('active');
+       });
+    </script>
+    <style>
+        body {
+         font-family: "Poppins", sans-serif;
+         overflow-x: hidden; 
+        }
+        .heading-main {
+         background: url(assets/laptop-with-analytics-chart.jpg) no-repeat center center/cover; 
+        }
+        .text-feature h1{
+         font-size: 2.5rem;
+         padding-top: 0px;
+         margin-bottom: 30px;
+        }
+    </style> 
+    <style>
+        #companyCodeModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body style="background-color: #f0f0f0;">
+    <nav class="navbar">
+        <div class="logo">
+            <a href="https://sednainfosystems.com/">
+                <img src="assets/prathham.png" alt="Sedna-logo1">
+            </a>
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
+        <label for="menu-toggle" class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+        <ul class="nav-links">
+            <li><a href="index.html"><b>Home</b></a></li>
+            <li><a href="javascript:void(0)" (click)="login()"><button class="button-1" role="button">Log In</button></a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div class="heading-main">
+            <div class="headings">
+                <h1><b>Transform your Business<br><br>With Prathham CRM</b></h1>
+                <h2><b>Empowering Your Business with Seamless<br> Customer Relationship Management</b></h2>
+            </div>
+        </div>
+        <div class="features" style="background-color: #f0f0f0;">
+            <h1>Expand Your Business With Ease</h1>
+            <div class="banner-main">
+                <div class="feature-banner">
+                    <div class="text-feature">
+                        <h1>Intuitive Dashboard</h1>
+                        <p>Monitor and manage your customer interactions,<br> sales processes, and performance metrics all in one place with our user-friendly interface.</p>
+                    </div>
+                    <img src="assets/dashboard.PNG" alt="">
+                </div>
+                <div class="feature-banner">
+                    <div class="text-feature">
+                        <h1>Advanced Analytics</h1>
+                        <p>Leverage powerful analytics tools to gain insights into customer behavior, <br>sales trends, and overall business performance, driving smarter decision-making.</p>
+                    </div>
+                    <img src="assets/statsui.PNG" alt="">
+                </div>
+                <div class="feature-banner">
+                    <div class="text-feature">
+                        <h1>Great Workflow</h1>
+                        <p>Adapt the CRM to fit your unique business processes with great workflows and <br> automation capabilities,saving you time and reducing manual effort.</p>
+                    </div>
+                    <img src="assets/workflows.PNG" alt="">
+                </div>
+            </div>
+        </div>
+        <div id="crmFeatures" >
+            <h1 style="margin-top: 30px;text-align: center;font-size: 2.5rem;margin-bottom: 70px;"><b>All the Features you can ask for</b></h1>
+            <div class="container">
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/management.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Lead Pipeline</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Effortlessly track and manage leads through each stage of the sales pipeline.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/report.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Summarized Leads Follow-Up</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Stay organized with summarized lead follow-ups, prioritizing tasks effectively.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/add.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Simple Lead Addition Process</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Easily add new leads to the system with a streamlined and user-friendly process.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/add.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Great Security</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Keep your data secure with top-tier security measures, ensuring compliance and business integrity.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/easy.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Easy to Use</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">User-friendly interface for intuitive navigation and smooth operations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/stats.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Lead Statistics</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Access detailed statistics and insights about leads and sales performance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/register.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Master Entry</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Easily manage and update master entries for streamlined data management.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/email-marketing.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Email Automation</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Automate email communication and follow-up processes for improved efficiency.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/responsive.png" style="width: 8%;margin-right: 19px;">
+                        <div>
+                          <h2 style="margin-right: 0px;"><b>Web and Mobile Website Accessibility</b></h2>
+                          <p style="margin-bottom: 0;margin-left: 30px;">Access your CRM system from any device with web and mobile compatibility for convenient use.</p>
+                        </div>
+                    </div>
+              </div>
+
+              <div class="card">
+                <div style="display: flex; align-items: center;">
+                    <img src="assets/WhatsApp.png" style="width: 8%;margin-right: 19px;">
+                    <div>
+                      <h2 style="margin-right: 0px;"><b>Seamless WhatsApp integration</b></h2>
+                      <p style="margin-bottom: 0;margin-left: 30px;">Seamlessly integrate WhatsApp messages to simplify follow-ups.</p>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+      <div class="text-demo">
+        <h1><b>Want to try Prathham CRM? Book a Demo Now.</b></h1>
+        <section >
+                <div class="card-container1">
+                    <div class="price-circle">
+                        <p class="price">₹ 14999</p>
+                    </div>
+                    <div class="card1">
+                        <h3><b>Begineer</b></h3>
+                        <ul>
+                            <li>Users :&nbsp;&nbsp;&nbsp;&nbsp;1 + 1</li>
+                            <li>Leads :&nbsp;&nbsp;&nbsp;&nbsp; 2000</li>
+                            <li>Mobile Access :&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Indiamart API :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No</li>
+                            <li>Facebook API :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No</li>
+                            <li>Whatsapp API :&nbsp;&nbsp;&nbsp;&nbsp; 10000</li>
+                            <li>Mobile App :&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Training :&nbsp;&nbsp;&nbsp;&nbsp; 4 Hours</li>
+                        </ul>
+                        
+                        <button class="Purchase" (click)="openPopup('Begineer')">Book Package</button>
+                
+                    </div>
+            
+            
+                </div>
+            
+                <div class="card-container2">
+                    <div class="price-circle2">
+                        <p class="price">₹ 20999</p>
+                    </div>
+                    <div class="card2">
+                        <h3><b>Standard</b></h3>
+                        <ul>
+                            <li>Users :&nbsp;&nbsp;&nbsp;&nbsp;1 + 5</li>
+                            <li>Leads :&nbsp;&nbsp;&nbsp;&nbsp; 1,00,000</li>
+                            <li>Mobile Access :&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Indiamart API :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No</li>
+                            <li>Facebook API :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No</li>
+                            <li>Whatsapp API :&nbsp;&nbsp;&nbsp;&nbsp; 50000</li>
+                            <li>Mobile App :&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Training :&nbsp;&nbsp;&nbsp;&nbsp; 20 Hours</li>
+                        </ul>
+                        <button class="button23" (click)="openPopup('Standard')">Book Package</button>
+                    </div>
+                </div>
+        
+                <div class="card-container1">
+                    <div class="price-circle">
+                        <p class="price">₹ 27999</p>
+                    </div>
+                    <div class="card1">
+                        <h3><b>Advanced</b></h3>
+                        <ul>
+                            <li>Users :&nbsp;&nbsp;&nbsp;&nbsp;1 + 9</li>
+                            <li>Leads :&nbsp;&nbsp;&nbsp;&nbsp; 5,00,000</li>
+                            <li>Mobile Access :&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Indiamart API :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Facebook API :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Whatsapp API :&nbsp;&nbsp;&nbsp;&nbsp; 100000</li>
+                            <li>Mobile App :&nbsp;&nbsp;&nbsp;&nbsp; Yes</li>
+                            <li>Training :&nbsp;&nbsp;&nbsp;&nbsp; 48 Hours</li>
+                        </ul>
+                        <button class="Purchase" (click)="openPopup('Advanced')">Book Package</button>
+                    </div>
+                </div>
+        </section> 
+      </div>
+
+      <!-- Popup Modal for form -->
+<div class="popup" *ngIf="showPopup">
+    <div class="popup-content">
+        <button class="close-btn" (click)="closePopup()">X</button>
+        <h2 style="text-align: center;margin-top: 10px;margin-bottom: 0px;color: #264796;">Book Now for {{ selectedPackageName }} Package</h2>
+        <div class="people7 container2">
+            <div class="row">
+                <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
+                    <div class="input-container" style="color: #964B00; margin: 10px;">
+                        <input style="padding: 10px;" type="text" name="name" ngModel placeholder="Name" required>
+                        <input style="padding: 10px;" type="tel" name="phone" ngModel placeholder="Contact Number" required>
+                        <input style="padding: 10px;" type="email" name="email" ngModel placeholder="Email ID" required>
+                        <!-- <input type="submit" value="Book Now" class="btn"> -->
+                         <button class="book">Book Now</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 
+      <div class="testimonials-main" style="background-color: #f0f0f0;">
+        <h1><b>Our Client's Testimonials</b></h1>
+        <div class="test-main">
+        <div class="info-test">
+            <div class="inner-text">
+            <img src="/assets/inspire.png" alt="">    
+            <h2><b>Inspire Wealth Mastery<br>&#9733; &#9733; &#9733; &#9733;</b></h2>
+            <p style="text-align: center;">"Prathham CRM has revolutionized the<br>way we manage customer relationships.<br>It's intuitive, efficient, and has<br>significantly improved our sales processes."</p>
+        </div>
+        </div>
+
+        <div class="info-test">
+            <div class="inner-text">
+                <img src="/assets/cplc.png" alt="">
+            <h2><b>CPLC Education<br>&#9733; &#9733; &#9733; &#9733; &#9733;</b></h2>
+            <p style="text-align: center;">"We've been using Prathham CRM for over a<br> year now, and it's been an indispensable tool <br>for tracking leads, managing communications, and driving our sales growth"</p>
+        </div>
+        </div>
+
+        <div class="info-test">
+            <div class="inner-text">
+                <img src="/assets/ajitelectronics.jpg" alt="" style="padding-top: 10px;">
+            <h2><b>Ajit Electronics<br>&#9733; &#9733; &#9733; </b></h2>
+            <p style="text-align: center;">"Prathham CRM's analytics features have provided deep insights into our customer preferences, enabling us to tailor our offerings and improve customer satisfaction"</p>
+        </div>
+        </div>
+       
+      </div>
+    </div>
+
+    <div class="video-showcase">
+        <h1><b>Video Showcase</b></h1>
+        <div class="videos-container">
+            <div class="video-item">
+                <video width="800" controls>
+                    <source src="../assets/crmvideo.mp4" type="video/mp4" >
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>   
+  </div>
+  <div class="getintouch">
+    <button><a href="https://sednainfosystems.com/contact.html" target="_blank" style="color: #000;"><b>Get In Touch</b></a></button><br>
+  </div>
+  <div class="footer">
+      <h1>&#169;2024 <a href="https://sednainfosystems.com/" style="color: #fff;" target="_blank">Sedna Technologies.</a> All rights reserved.</h1>
+        <button class="support"><a href="/supportlogin" style="color: #000;">Support login</a></button>&nbsp;&nbsp;
+        <button class="support" (click)="openModal()">Create Ticket</button>
+        <app-modal (companyCodeSubmitted)="handleCompanyCode($event)"></app-modal>
+  </div>
+  <div id="companyCodeModal">
+    <div class="modal-content">
+        <h3>Enter your Company Code</h3>
+        <input type="text" id="companyCodeInput" placeholder="Company Code" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+        <button class="submit-btn" id="submitBtn">Submit</button>
+        <button class="cancel-btn" id="cancelBtn">Cancel</button>
+    </div>
+</div>
+
+  <div class="overlay" id="overlay"></div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+  <!-- <script src="main.js"></script> -->
+</body>
+
+</html>
+

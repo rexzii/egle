@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>Admin Dashboard | Keyframe Effects</title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body>
+   <input type="checkbox" id="menu-toggle">
+    <div class="sidebar">
+        <div class="side-header">
+           <img src="{{path}}" alt="Image" style="width: 50px;">
+        </div><br>
+        <p style="color: #ffffff;font-size: 13px;padding-left: 38px;">Renewal Date <br> &nbsp;&nbsp;&nbsp;{{ expireDate | date: 'dd-MM-yyyy' }}</p>
+        <div class="side-content"><br>
+            <div class="side-menu">
+                <ul>
+                    <li style="cursor: pointer;">
+                        <a (click)="dash1()" >
+                            <span class="las la-home">&nbsp;<small style="font-size: 12px;">Dashboard</small></span>
+                        </a>
+                    </li>    
+                    <li style="cursor: pointer;">
+                        <a (click)="navigateToFamilyPage()" >
+                            <span class="las la-chart-bar">&nbsp;<small style="font-size: 12px;" >Add Leads</small></span>      
+                         </a>
+                    </li>
+                    <li style="cursor: pointer;" *ngIf="company_code === '1001'">
+                        <a (click)="navigateToFaceboookpage()" >
+                            <span class="fab fa-facebook">&nbsp;<small style="font-size: 12px;">FacebookLeads</small></span>      
+                         </a>
+                     </li>
+                    <li *ngIf="company_code !== '1001'" style="cursor: pointer;">
+                        <a  (click)="navigateTouser()">
+                            <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Add Users</small></span>
+                            
+                         </a>
+                    </li>
+                    <li *ngIf="company_code === '1001'" style="cursor: pointer;">
+                        <a  (click)="navigateTomanageuser()">
+                            <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Manage User</small></span>
+                            
+                         </a>
+                     </li>
+                    <!-- <li style="cursor: pointer;">
+                        <a  (click)="navigateToleadstatastics()" >
+                            <span class="las la-chart-line">&nbsp;<small style="font-size: 12px;">Lead Statistics</small></span>
+                            
+                         </a>
+                     </li> -->
+                     <li style="cursor: pointer;">
+                        <a (click)="navigateTomasterentry()">
+                            <span class="las la-edit">&nbsp;<small style="font-size: 12px;">Master's Entry</small></span>
+                        </a>
+                    </li>
+                    <li *ngIf="user_right === 'super'" style="cursor: pointer;">
+                        <a (click)="navigateTotrashpage()">
+                            <span class="las la-trash-alt">&nbsp;<small style="font-size: 12px;">Trash Leads</small></span>
+                        </a>
+                    </li>
+                    <li style="cursor: pointer;">
+                        <a  class="active">
+                            <span class="las las la-file-alt">&nbsp;<small style="font-size: 12px;">Reports</small></span>   
+                         </a>
+                     </li>
+
+                     <li style="cursor: pointer;">
+                        <a (click)="navigatevisistingcardpage()">
+                            <span class="material-icons">qr_code_scanner
+                            <small style="font-size: 12px;">Card Scanning</small></span>
+                        </a>
+                    </li>  
+ 
+                     <li style="cursor: pointer;">
+                        <a (click)="openModal()">
+                          <span class="las la-user-check">&nbsp;<small style="font-size: 12px;">Attendance</small></span>
+                        </a>
+                      </li>
+                      <app-attendance-modal *ngIf="isModalOpen" (close)="isModalOpen = false"></app-attendance-modal>
+                    <li style="cursor: pointer;">
+                        <a (click)="logout()">
+                           <span class="las la-power-off">&nbsp;<small style="font-size: 12px;">Logout</small></span>    
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="las la-question-circle">&nbsp;<small style="font-size: 12px;">Help</small></span>   
+                        </a>
+                    </li>   
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">    
+        <header>
+            <div class="header-content">
+                <label for="menu-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+                <div class="user" style="cursor: pointer;" (click)="openUserPopup(user_id, username)">
+                    <div class="bg-img" *ngIf="user_right === 'super'" style="background-image: url(../assets/super1.png)"></div>
+                    <div class="bg-img" *ngIf="user_right === 'data-entry'" style="background-image: url(../assets/dataentry.png)"></div>
+                    <div class="bg-img" *ngIf="user_right === 'manager'" style="background-image: url(../assets/manager.png)"></div>
+                    <b style="padding-top: 9px;">
+                      Welcome {{ username | titlecase }}
+                      <p style="font-size: 12px;">{{ user_right }} User</p>
+                    </b>
+                  </div>
+                  <div *ngIf="showModal" class="modal">
+                    <div class="modal-content">
+                      <span class="close" (click)="closeModal()">&times;</span>
+                      <h2 style="text-align: center;"><b>{{username}}</b></h2>
+                      <form (ngSubmit)="submitUserForm()">
+                        <label for="password">Password:</label>
+                        <input type="{{ showPassword ? 'text' : 'password' }}" id="password" [(ngModel)]="modalData.password" name="password" required />
+                        <span class="toggle-password" (click)="togglePasswordVisibility()">
+                            <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                        </span>
+                        <button class="mit" type="submit">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                <div class="header-menu">
+                    <div class="add" style="margin-right: 0px;"> 
+                        <button (click)="logout()"><span class="las la-power-off" style="color: #ffffff;"></span>Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="page-content"> 
+                <div class="three-button">
+                <button type="button" class="company" (click)="showLeadsLog()">Leads Log</button>
+                <button type="button" class="add-user" (click)="showEmailLog()">Email Log</button>
+                </div> 
+                <div class="records table-responsive" >
+                <div *ngIf="showingEmailLog">
+                    <div class="record-header">
+                        <div class="add">
+                            <span>{{ leadData.length }}</span>
+                            <span>Records Found</span>   
+                        </div>
+                    </div>
+                    <br><br>
+                    <div>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Sr No.</th>
+                                    <th (click)="sortBy('send_date')">
+                                        Send Date
+                                        <span class="sort-arrow" [ngClass]="{'sort-up': sortByField === 'send_date' && sortOrder === 'asc', 'sort-down': sortByField === 'send_date' && sortOrder === 'desc', 'sort-default': sortByField !== 'send_date'}"></span>
+                                    </th>
+                                    <th (click)="sortBy('reg_date')">
+                                        Registration Date
+                                        <span class="sort-arrow" [ngClass]="{'sort-up': sortByField === 'reg_date' && sortOrder === 'asc', 'sort-down': sortByField === 'reg_date' && sortOrder === 'desc', 'sort-default': sortByField !== 'reg_date'}"></span>
+                                    </th>
+                                    <th (click)="sortBy('personname')">
+                                        Person Name
+                                        <span class="sort-arrow" [ngClass]="{'sort-up': sortByField === 'personname' && sortOrder === 'asc', 'sort-down': sortByField === 'personname' && sortOrder === 'desc', 'sort-default': sortByField !== 'personname'}"></span>
+                                    </th>
+                                    <th (click)="sortBy('products')">
+                                        Products
+                                        <span class="sort-arrow" [ngClass]="{'sort-up': sortByField === 'products' && sortOrder === 'asc', 'sort-down': sortByField === 'products' && sortOrder === 'desc', 'sort-default': sortByField !== 'products'}"></span>
+                                    </th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody  *ngIf="!isLeadRestored">
+                                <tr *ngFor="let lead of leadData">
+                                    <td style="font-weight: normal;">{{ lead.serialNumber }}</td>
+                                    <td>{{ lead.send_date | date: 'dd-MM-yyyy' }}</td>
+                                    <td>{{ lead.reg_date | date: 'dd-MM-yyyy' }}</td>
+                                    <td>{{ lead.personname }}</td>
+                                    <td>{{ lead.products }}</td>
+                                    <td>
+                                        <div class="actions" style="  cursor: pointer;">
+                                        <span class="las la-eye" (click)="navigateToViewLead(lead.lead_id)"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="leadData.length === 0">
+                                    <td colspan="8" style="text-align: center;"><b>No leads Available  In Todays Mail Reports</b></td>
+                                </tr>  
+                            </tbody>
+                        </table><br>
+                    </div>
+                </div>  
+            <div *ngIf="showingLeadsLog">
+                <div class="timeframe-container">
+                    <div class="radio-group">
+                        <input type="radio" name="timeframe" id="last_one_month" (change)="onTimeframeChange('last_one_month')" [(ngModel)]="selectedTimeframe" value="last_one_month">
+                        <label for="last_one_month">Last One Month</label>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <input type="radio" name="timeframe" id="last_six_month" (change)="onTimeframeChange('last_six_month')" [(ngModel)]="selectedTimeframe" value="last_six_month">
+                        <label for="last_six_month">Last Six Months</label>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <input type="radio" name="timeframe" id="one_year" (change)="onTimeframeChange('one_year')" [(ngModel)]="selectedTimeframe" value="one_year">
+                        <label for="one_year">One Year</label>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <input type="radio" name="timeframe" id="all" (change)="onTimeframeChange('all')" [(ngModel)]="selectedTimeframe" value="all">
+                        <label for="all">All</label>
+                    </div>
+                </div>
+              
+              <div style="text-align: center;">
+                <select formControlName="stage" name="stage" (change)="onStageChange($event)">
+                  <option>Select Stage</option>
+                  <option *ngIf="!stageData || stageData.length === 0" value="" disabled selected>Fill Master table initially</option>
+                  <option *ngFor="let stag of stageData" [value]="stag.stage_name">{{ stag.stage_name }}</option>
+                </select>
+              </div><br>
+               <div class="row" style="display: flex;justify-content: space-between;">
+                    <div>
+                        <span style="font-size: 15px;margin-left: 20px;">Search:</span>&nbsp;&nbsp;
+                        <input type="text" [(ngModel)]="searchText" (input)="filterLeads()" style="height: 21px;" placeholder="Search by Name or Company">
+                    </div>     
+              
+                    <div style="margin-right: 20px;">  
+                     <button (click)="exportToExcel()" class="btn btn-primary">Export to Excel</button>
+                    </div> 
+                </div>
+              <div class="table-container">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;&nbsp;Select All <br>
+                                <input type="checkbox" (change)="selectAll($event)">
+                            </th>
+                            <th>Name</th>
+                            <th>Company Name</th>
+                            <th>Products</th>
+                            <th>Stage</th>
+                            <th>Next Follow-up Date</th>
+                            <th>Contact No</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let lead of filteredLeads; let i = index">
+                            <td>
+                                <input type="checkbox" [(ngModel)]="lead.selected">
+                            </td>
+                            <td>{{ lead.personname }}</td>
+                            <td>{{ lead.companyname }}</td>
+                            <td>{{ lead.products }}</td>
+                            <td>{{ lead.stage }}</td>
+                            <td>{{ lead.next_month_follow_up | date: 'dd-MM-yyyy' }}</td>
+                            <td>
+                                <a [href]="'tel:' + lead.contactno" style="color: #444;"> <span>{{ lead.contactno }}</span></a>
+                            </td>
+                            <td style="display: flex; cursor: pointer;">
+                                <div class="actions">
+                                  <span class="material-symbols-outlined more-vert-icon">more_vert</span>
+                                  <div class="dropdown-content">
+                                    <a (click)="navigateToUpdateLead(lead.lead_id, lead.personname, lead.email)" class="action" id="addLead">Add Followup</a>
+                                    <!-- <a (click)="openDeleteConfirmation(lead.lead_id)" class="action" id="deleteLead">Lead Delete</a>  -->
+                                    <a (click)="navigateToleadEdit(lead.lead_id)" class="action" id="chatNow">Lead Edit</a>
+                                  </div>
+                                </div>
+                                <span class="las la-eye" (click)="navigateToViewLead(lead.lead_id)" style="font-size: 25px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                 <span class="material-symbols-outlined" (click)="openWhatsApp(lead.contactno)">chat</span> 
+                              </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" style="margin-top: 40px;" (click)="startAutoCall()">Start Auto Call</button>
+            </div> 
+            <br><br>
+            </div></div>
+        </div>
+        </main> 
+    </div>     
+</body>
+</html>
+ 
+

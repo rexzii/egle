@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-X9/ZP+qM0WsgK2xI6Dk3fd1abNljFFrFy5+KvEO8m+2GXx5xF/rvKT+99Y8q7x0B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<div class="popup">
+    <div class="popup-content">
+      <span class="close" (click)="closePopup.emit()" style="cursor: pointer;">&times;</span>
+      <h2>User Details</h2>
+      <div class="scrollable-modal-content">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Reg Date</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <!-- <th>Password</th> -->
+            <th>Active</th>
+            <th>Action</th>
+            <th>Log Error</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of companyUsers">
+            <td>{{ user.reg_date | date:"dd-MM-yyyy" }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <!-- <td>{{ user.password}}</td> -->
+            <td>{{ user.active}}</td>
+            <td>
+              <i class="material-icons" style="border-radius: 50%; display: inline-block; margin-left: 23px; margin-right: 5px; cursor:pointer;" (click)="navigateToEditPage(user.user_id)">edit</i>
+              <i class="material-icons" style="border-radius: 50%; display: inline-block; margin-left: 23px; margin-right: 5px; cursor:pointer;" (click)="openDeleteConfirmation(user.user_id)">delete</i>
+            </td>
+            <td>
+              <button (click)="viewUserLog(user.user_id)">View Log</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      <!-- Popup Modal -->
+<div class="modal" *ngIf="showLogs">
+  <div class="modal-content">
+    <span class="close-btn" (click)="closeLogs()">×</span>
+    <h3 *ngIf="userLogs.length > 0" style="text-align: center;" ><b>{{ userLogs[0].username }}</b></h3>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Log ID</th>
+          <th>Login Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of userLogs">
+          <td>{{ log.log_id }}</td>
+          <td>{{ log.login_time | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+          <td>{{ log.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <button (click)="closeLogs()">Close</button> -->
+  </div></div>
+    </div>
+  </div>
+</html>  

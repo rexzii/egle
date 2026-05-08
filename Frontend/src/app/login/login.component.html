@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Login Form</title>
+</head>
+<body style="background-image: url('../assets/loginback.jpg');">
+<div class="login-container">
+    <img src="../assets/logincrm.png" alt="Logo">
+    <h2>Welcome!</h2>
+    <p>Please enter your details</p>
+    <form [formGroup]="loginForm"  class="form" (ngSubmit)="Submit()">   
+        <input type="text"  formControlName="username" name="username" placeholder="User Name" required>
+        <div class="password-wrapper">
+            <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="password" name="password" placeholder="Password" required>
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+                <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </span>
+        </div>
+        <!-- <div class="remember-me" >
+            <input type="checkbox" formControlName="rememberMe" id="rememberMe">&nbsp;&nbsp;
+            <label for="rememberMe">Remember Me</label>
+        </div>     -->
+        <button type="submit">Login</button>
+    </form>
+    <p>Forgot your password?<a [routerLink]="['/forgotpassword']">Click Here</a></p>
+</div>
+</body>
+</html>

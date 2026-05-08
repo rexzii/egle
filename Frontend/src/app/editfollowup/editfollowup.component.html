@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat&display=swap">
+</head>
+<body style="background-image: url('../assets/loginback.jpg');">
+<div class="login-container">
+    <h5 style="display: flex; align-items: center; justify-content: space-between; text-align: left;">
+        <div style="display: flex; align-items: center;">
+            <i class="material-icons">timer</i>
+            <b class="title">Add New Update - {{ updatefolowupForm.get('personname')?.value }}</b>
+        </div>
+        <i class="material-icons" (click)="closeContainer()" style=" cursor: pointer;">cancel</i>
+    </h5><hr>
+   <form [formGroup]="updatefolowupForm" class="form" (ngSubmit)="update()">
+     <input type="text" formControlName="lead_id" name="lead_id" hidden>
+     <input type="text" formControlName="personname" name="personname" hidden>
+     <div class="main" >
+        <label for="follow_up_time" style="text-align: left;">Follow-up Time:</label>
+        <input type="time" formControlName="follow_up_time" name="follow_up_time" required>
+     </div>
+     <div class="main">
+        <label for="nextfollow_up_by"> Next Follow-up Date:</label>
+        <input type="date" formControlName="nextfollow_up_by" name="nextfollow_up_by" >
+     </div>
+     <div class="main">
+      <label for="stage">Stage</label>
+      <select formControlName="stage" name="stage">
+        <option>Select Stage</option>
+        <option *ngIf="!stageData || stageData.length === 0" value="" disabled selected>Fill Master table initially</option>
+        <option *ngFor="let stag of stageData" [value]="stag.stage_name">{{ stag.stage_name }}</option>
+      </select>
+  </div>
+      <div class="main">
+        <label for="reminder_status">Reminder Status</label>
+        <select type="text" formControlName="reminder_status" name="reminder_status">
+            <option value="Reminder 1">Reminder 1</option>
+            <option value="Reminder 2">Reminder 2</option>
+            <option value="Reminder 3">Reminder 3</option>
+            <option value="Reminder 4">Reminder 4</option>
+            <option value="Reminder 5">Reminder 5</option>
+        </select>
+      </div>
+      <div class="main">
+        <label for="remark">Remark</label>
+        <input type="text" formControlName="remark" name="remark">
+      </div>
+      <button type="button" (click)="update()">Update</button>
+    </form>  
+</div>
+</body>
+</html>
+

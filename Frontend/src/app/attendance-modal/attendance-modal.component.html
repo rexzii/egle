@@ -1,0 +1,58 @@
+<div class="scrollable-modal-content">
+    <div class="modal-overlay" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <span class="close-icon" (click)="closeModal()">&times;</span>
+            <h1><b>Attendance Sheet</b></h1>
+            <div class="button-container">
+                <button id="startButton" (click)="startAttendance()">Start Work</button>
+                <button id="startButton" (click)="stopAttendance()">Stop Work</button>
+            </div>
+            <form #dateForm="ngForm" class="date-filter-form">
+                <input type="radio" id="thisWeek" name="dateFilter" (change)="setThisWeek()" [checked]="isThisWeekSelected">
+                <label for="thisWeek">This Week</label>&nbsp;&nbsp;&nbsp;
+
+                <input type="radio" id="thisMonth" name="dateFilter" (change)="setThisMonth()" [checked]="isThisMonthSelected">
+                <label for="thisMonth">This Month</label>
+              </form> 
+            <div class="attendance-container">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Coordinates</th>
+                            <th>Stop Date</th>
+                            <th>Stop Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let record of getCurrentPageRecords()">
+                            <td>{{ record.username }}</td>
+                            <td>{{ record.date | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ record.time | date:'hh:mm a' }}</td>
+                            <td  class="location">{{ record.location }}</td>
+                            <td>{{ record.coordinates }}</td>
+                            <td>{{ record.stop_date | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ record.stop_time | date:'hh:mm a' }}</td>
+                        </tr>
+                        <tr *ngIf="filteredRecords.length === 0">
+                            <td colspan="7">No attendance records found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-pagination">
+                <div class="pagination">
+                    <button class="prev-next" (click)="onPrevPage()" [disabled]="currentPage === 1" style="padding-right: 60px;">Previous</button>
+                    <div class="page-numbers">
+                        <button *ngFor="let page of totalPages()" (click)="onPageChange(page)" [class.active]="currentPage === page">{{ page }}</button>
+                    </div>
+                    <button class="prev-next" (click)="onNextPage()" [disabled]="currentPage === totalPages().length">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

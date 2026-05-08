@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Dynamic Tile Background Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+       display: flex; 
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 110vh;
+      transition: background 0.5s ease; 
+    }
+
+    /* Default background */
+    body.default {
+      background: repeating-linear-gradient(
+        45deg,
+        #e6e6e6,
+        #e6e6e6 25px,
+        #ffffff 25px,
+        #ffffff 50px
+      );
+    }
+
+    /* Floor tile background */
+    body.floor {
+      background: repeating-linear-gradient(
+        90deg,
+        #ffe4b2,
+        #ffe4b2 20px,
+        #ffcc99 20px,
+        #ffcc99 40px
+      );
+    }
+
+    /* Wall tile background */
+    body.wall {
+      background: repeating-linear-gradient(
+        45deg,
+        #b3d9ff,
+        #b3d9ff 30px,
+        #80c1ff 30px,
+        #80c1ff 60px
+      );
+    }
+
+    /* Roof tile background */
+    body.roof {
+      background: repeating-linear-gradient(
+        0deg,
+        #ffb3b3,
+        #ffb3b3 25px,
+        #ff9999 25px,
+        #ff9999 50px
+      );
+    }
+
+    .form-container {
+      width: 90%;
+      max-width: 600px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+     
+
+
+    }
+
+    .form-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body class="default">
+  <form class="form-container" [formGroup]="customerForm" (ngSubmit)="submit()">
+    <div class="form-header">Ticket Issue Form</div>
+    <!-- {{company_code}} -->
+    <div class="form-group">
+      <select formControlName="products" name="products" class="products" required >
+        <option class="option-grey">Select Products</option>
+        <option *ngIf="!productData || productData.length === 0" value="" disabled selected>Fill Master table initially</option>
+        <option *ngFor="let product of productData" [value]="product.product_name">{{ product.product_name }}</option>
+      </select>
+    </div> 
+    <div class="form-group">
+      <input type="text" formControlName="company_name" placeholder="Company Name" required />
+    </div>
+    <div class="form-group">
+      <input type="email" formControlName="email" placeholder="Enter Your Email*" required />
+      <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched">
+        <small class="error-text">Please enter a valid email address (must be a Gmail address).</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="mobileno" placeholder="Enter Your Mobile No*" required maxlength="10" (input)="onMobileInput($event)" />
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="Description" placeholder="Problem Description*" required />
+    </div>
+
+    <div class="form-group">
+      <input type="file" (change)="onFileSelected($event)" style=" color: #766f6f !important;
+      background-color: transparent;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      appearance: none; 
+      -webkit-appearance: none; 
+      -moz-appearance: none; " />
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="remark" placeholder="Enter Remark" />
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="created_by" placeholder="Created By*" />
+    </div>
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+  <script>
+    const body = document.body;
+    const categorySelect = document.getElementById("category");
+
+    categorySelect.addEventListener("change", () => {
+      // Remove existing category class
+      body.className = "";
+      // Add the selected category class
+      body.classList.add(categorySelect.value);
+    });
+  </script>
+</body>
+</html>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<form class="form-container" [formGroup]="customerForm" (ngSubmit)="submit()">
+    <div class="form-header">Form</div>
+    <div class="form-group">
+      <label for="company_name">Company Name</label>
+      <input type="text" formControlName="company_name" placeholder="company_name" required />
+    </div>
+  
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input type="date" formControlName="date" placeholder="Enter Date" required />
+    </div>
+  
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" formControlName="email" placeholder="Enter Email" required />
+    </div>
+  
+    <div class="form-group">
+        <label for="mobileno">Mobile No.</label>
+        <input type="number" formControlName="mobileno" placeholder="Enter Mobileno" required />
+    </div>
+
+    <div class="form-group">
+        <label for="describe">Describe</label>
+        <input type="text" formControlName="describe" placeholder="Enter details" required />
+    </div>
+
+    <div class="form-group">
+      <label for="image">Upload Image</label>
+      <input type="file" (change)="onFileSelected($event)" />
+    </div>
+  
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Company Name</th>
+        <th>Date</th>
+        <th>Email</th>
+        <th>Mobile No.</th>
+        <th>Describe</th>
+        <th>Image</th> 
+     </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lead of leadData">
+        <td style="font-weight: normal;font-size: 12px;">{{ lead.company_name }}</td>
+        <td>{{ lead.date | date:'dd-MM-yyyy' }}</td>
+        <td>{{ lead.email }}</td>
+        <td>{{ lead.mobileno }}</td>
+        <td>{{ lead.describe }}</td>
+        <td>{{ lead.image }}</td>
+       </tr>
+    </tbody>
+  </table> -->

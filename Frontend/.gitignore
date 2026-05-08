@@ -1,0 +1,100 @@
+# =========================
+# Angular / Frontend
+# =========================
+dist/
+tmp/
+out-tsc/
+bazel-out/
+.angular/
+.angular/cache/
+
+# =========================
+# Node
+# =========================
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =========================
+# Build Outputs
+# =========================
+frontend/dist/
+backend/dist/
+build/
+coverage/
+
+# =========================
+# Environment Files
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# IDEs / Editors
+# =========================
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+.history/
+
+# =========================
+# Cache / Temp
+# =========================
+.cache/
+.parcel-cache/
+.sass-cache/
+tmp/
+*.tmp
+*.temp
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+libpeerconnection.log
+testem.log
+
+# =========================
+# Uploads
+# =========================
+uploads/
+backend/uploads/
+
+# =========================
+# Database
+# =========================
+*.sqlite
+*.sqlite3
+*.sql
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+._*
+
+# =========================
+# Misc
+# =========================
+connect.lock
+typings/

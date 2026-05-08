@@ -1,0 +1,10 @@
+<h2 mat-dialog-title style="color: #264796;text-align: center;">WhatsApp Message</h2>
+<mat-dialog-content>
+  <textarea [(ngModel)]="editedMessage">
+    {{ data.initialMessage }}
+  </textarea>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>&nbsp;&nbsp;&nbsp;
+  <button (click)="sendEditedMessage()">Send Message</button>
+</mat-dialog-actions>

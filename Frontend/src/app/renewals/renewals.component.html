@@ -1,0 +1,40 @@
+<div class="scrollable-modal-content">
+<div class="modal-header">
+    <h2>Renewals</h2>
+    <button mat-icon-button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+</div>  
+<table class="styled-table">
+    <thead>
+      <tr>
+        <!-- <th>lead_Id</th> -->
+        <th>Name</th>
+        <th>Company Name</th>
+        <th>Products</th>
+        <th>Stage</th>
+        <th>Next Follow-up Date</th>
+        <th>Contact No</th>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="leadData && leadData.length > 0">
+          <ng-container *ngFor="let lead of leadData">
+            <tr *ngIf="lead.stage === 'Order Closed'">
+              <!-- <td>{{ lead.lead_id }}</td> -->
+              <td>{{ lead.personname }}</td>
+              <td>{{ lead.companyname }}</td>
+              <td>{{ lead.products }}</td>
+              <td>{{ lead.stage }}</td>
+              <td>{{ lead.nextfollow_up_by | date: 'dd-MM-yyyy' }}</td>
+              <td>{{ lead.contactno }}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <tr *ngIf="hasNoRenewals()">
+          <td colspan="8" style="text-align: center;"><b>No Renewals</b></td>
+        </tr>
+      </tbody>   
+  </table>
+</div>
+<br>

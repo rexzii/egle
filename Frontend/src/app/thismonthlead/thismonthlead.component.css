@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+.scrollable-modal-content {
+  height: 400px; 
+  overflow-y: auto;
+  font-family: 'Montserrat', sans-serif; 
+  width: 0 auto;
+}
+
+.modal-header {
+  background-color: #264796; 
+  color: #ffffff; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif; 
+  height: 40px;
+}
+
+.modal-header h2 {
+  margin: 0; 
+}
+
+.custom-button {
+  padding: 0; 
+  min-width: initial; 
+  min-height: initial; 
+}
+
+.filter-form {
+  margin-bottom: 20px;
+}
+  
+.styled-table {
+  width: 95%; 
+  margin: 0 auto; 
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.styled-table th, .styled-table td {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: left;
+  font-size: 12px;
+}
+  
+.styled-table th {
+  background-color: #f2f2f2;
+}
+  
+.styled-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+
+@media screen and (max-width: 768px) {
+  .styled-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .styled-table thead {
+    display: none; 
+  }
+
+  .styled-table tbody {
+    display: block;
+    width: 100%;
+  }
+  
+  .styled-table tbody td {
+      padding: 3px 25px 3px 20px;
+      color: #444;
+  }
+
+  .styled-table td {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    padding: 150px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+
+  }
+
+  .styled-table tr {
+    border-bottom: 6px solid #908888; 
+    margin-bottom: 60px;
+    padding-bottom: 60px;
+    border-top: 6px solid #908888; 
+  }
+      
+    
+
+ 
+  .styled-table td::before {
+    content: ''; 
+    display: inline-block;
+     width: 50px;
+    vertical-align: middle;
+    
+  }
+
+
+  .styled-table td:nth-child(1)::before {
+    content: "\e7fd"; 
+    font-family: 'Material Icons';
+  }
+  
+  .styled-table td:nth-child(2)::before {
+    content: "\e8ad"; 
+    font-family: 'Material Icons';
+  }
+  
+  .styled-table td:nth-child(3)::before {
+    content: "\e8c4"; 
+    font-family: 'Material Icons';
+  }
+  
+  .styled-table td:nth-child(4)::before {
+    content: "\e1b6"; 
+    font-family: 'Material Icons';
+  }
+  
+  .styled-table td:nth-child(5)::before {
+    content: "\e935"; 
+    font-family: 'Material Icons';
+  }
+
+  .styled-table td:nth-child(6)::before {
+    content: "\e0b0"; 
+    font-family: 'Material Icons';
+  }
+  
+  .styled-table td:nth-child(7)::before {
+    content: "\e7fd"; 
+    font-family: 'Material Icons';
+  }
+
+  .styled-table td:nth-child(8)::before {
+    content: "\e8b8";
+    font-family: 'Material Icons';
+  }
+  
+  .styled-table td .actions {
+    display: inline-flex; 
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0px;
+  }
+
+  .styled-table td .actions .material-symbols-outlined,
+  .styled-table td .actions .las {
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .styled-table td .actions .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    z-index: 1000;
+  }
+
+  .styled-table td .actions:hover .dropdown-content {
+    display: block;
+  }
+
+  .styled-table td .actions .dropdown-content a {
+    padding: 8px;
+    text-decoration: none;
+    display: block;
+    font-size: 12px;
+    background-color: #f2f2f2;
+  }
+
+  .styled-table td .actions .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+
+  .styled-table td .actions span {
+    display: inline-flex;
+    align-items: center;
+  } 
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+      /* Add this to your thismonthlead.component.css */
+::ng-deep .custom-dialog .mat-dialog-container {
+  width: 80%; /* Set this to the desired width */
+  max-width: 1200px; /* You can set a max width as well */
+}
+}
+
+
+
+

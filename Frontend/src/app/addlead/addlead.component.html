@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>Admin Dashboard | Keyframe Effects</title>
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    @media (max-width: 768px) {
+    .pppp{
+      margin-left: 550px;
+    }
+  }
+  
+  </style>
+</head>
+<body>
+<input type="checkbox" id="menu-toggle">
+<div class="sidebar">
+    <div class="side-header">
+      <img src="{{path}}" alt="Image" style="width: 50px;">
+    </div><br>
+    <p style="color: #ffffff;font-size: 13px;padding-left: 38px;">Renewal Date <br> &nbsp;&nbsp;&nbsp;{{ expireDate | date: 'dd-MM-yyyy' }}</p> 
+    <div class="side-content">
+      <div class="side-menu">
+        <ul>
+          <li style="cursor: pointer;">
+            <a (click)="dash1()"  >
+              <span class="las la-home">&nbsp;<small style="font-size: 12px;">Dashboard</small></span>
+            </a>
+          </li>    
+          <li style="cursor: pointer;">
+            <a class="active">
+              <span class="las la-chart-bar">&nbsp;<small style="font-size: 12px;" >Add Leads</small></span>      
+            </a>
+          </li>
+          <li style="cursor: pointer;" *ngIf="company_code === '1001'">
+            <a (click)="navigateToFaceboookpage()" >
+                <span class="fab fa-facebook">&nbsp;<small style="font-size: 12px;">FacebookLeads</small></span>      
+             </a>
+         </li>
+          <li *ngIf="company_code !== '1001'" style="cursor: pointer;">
+            <a  (click)="navigateTouser()">
+              <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Add Users</small></span>  
+             </a>
+         </li> 
+         <li *ngIf="company_code === '1001'" style="cursor: pointer;">
+          <a  (click)="navigateTomanageuser()">
+              <span class="las la-user-alt">&nbsp;<small style="font-size: 12px;">Manage User</small></span>
+              
+           </a>
+       </li>
+         <!-- <li *ngIf="company_code === '1001'" style="cursor: pointer;">
+            <a  (click)="navigateToleadstatastics()">
+              <span class="las la-chart-line">&nbsp;<small style="font-size: 12px;">Lead Statistics</small></span>
+            </a>
+          </li> -->
+          <li style="cursor: pointer;">
+            <a (click)="navigateTomasterentry()">
+                <span class="las la-edit">&nbsp;<small style="font-size: 12px;">Master's Entry</small></span>
+            </a>
+          </li>
+          <li *ngIf="user_right === 'super'" style="cursor: pointer;">
+            <a (click)="navigateTotrashpage()">
+                <span class="las la-trash-alt">&nbsp;<small style="font-size: 12px;">Trash Leads</small></span>
+            </a>
+        </li>
+        
+          <li style="cursor: pointer;">
+            <a  (click)="navigateReportspage()">
+              <span class="las las la-file-alt">&nbsp;<small style="font-size: 12px;">Reports</small></span>
+            </a>
+          </li> 
+
+          <li style="cursor: pointer;">
+            <a (click)="navigatevisistingcardpage()">
+                <span class="material-icons">qr_code_scanner
+                <small style="font-size: 12px;">Card Scanning</small></span>
+            </a>
+        </li>  
+
+          <li style="cursor: pointer;">
+            <a (click)="openModal()">
+              <span class="las la-user-check">&nbsp;<small style="font-size: 12px;">Attendance</small></span>
+            </a>
+          </li>
+          
+          <app-attendance-modal *ngIf="isModalOpen" (close)="isModalOpen = false"></app-attendance-modal>
+           
+          <li style="cursor: pointer;">
+            <a (click)="logout()">
+              <span class="las la-power-off">&nbsp;<small style="font-size: 12px;">Logout</small></span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <span class="las la-question-circle">&nbsp;<small style="font-size: 12px;">Help</small></span>   
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>   
+<div class="main-content">    
+  <header>
+    <div class="header-content">
+      <label for="menu-toggle">
+        <span class="las la-bars"></span>
+      </label>
+      <div class="user" style="cursor: pointer;" (click)="openUserPopup(user_id, username)">
+        <div class="bg-img" *ngIf="user_right === 'super'" style="background-image: url(../assets/super1.png)"></div>
+        <div class="bg-img" *ngIf="user_right === 'data-entry'" style="background-image: url(../assets/dataentry.png)"></div>
+        <div class="bg-img" *ngIf="user_right === 'manager'" style="background-image: url(../assets/manager.png)"></div>
+        <b style="padding-top: 9px;">
+          Welcome {{ username | titlecase }}
+          <p style="font-size: 12px;">{{ user_right }} User</p>
+        </b>
+      </div>
+      <div *ngIf="showModal" class="modal">
+        <div class="modal-content">
+          <span class="close" (click)="closeModal()">&times;</span>
+          <h2 style="text-align: center;"><b>{{username}}</b></h2>
+          <form (ngSubmit)="submitUserForm()">
+            <label for="password">Password:</label>
+            <input type="{{ showPassword ? 'text' : 'password' }}" id="password" [(ngModel)]="modalData.password" name="password" required />
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+                <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </span>
+            <button class="mit" type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="header-menu" style="margin-left: 10px;">
+        <div class="add" style="margin-right: 0px;">
+          <button (click)="logout()"><span class="las la-power-off" style="color: #ffffff;"></span>Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>   
+  <main>
+  <div class="page-content">
+    <div class="records table-responsive">
+      <div class="row">
+        <h4 [ngStyle]="{'background-color': showLeadForm ? '#34425A' : '#bec8da', 'color': '#ffffff', 'cursor': 'pointer'}"
+          (click)="showLeadForm = true; showUploadForm = false;"><b>Add New Lead</b></h4>
+        <h4 [ngStyle]="{'background-color': showUploadForm ? '#34425A' : '#bec8da', 'color': '#ffffff', 'cursor': 'pointer'}"
+          (click)="showUploadForm = true; showLeadForm = false;"><b>Upload Excel</b></h4>
+      </div>
+      <div class="record-header" *ngIf="showLeadForm">
+        <form [formGroup]="leadForm" class="form" (ngSubmit)="onSubmit()">
+          <div class="dInput">
+            <div>
+              <label for="designation"><b>Existing Client</b></label>
+              <select formControlName="selectedClient" name="designation" (change)="onClientSelected()">
+                <option value="" disabled selected>Select an existing client</option>
+                <option *ngFor="let company of uniqueCompanyNames" [value]="company">
+                  {{ company }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="products.length > 0 && showPurchasedProducts">
+              <label for="designation"><b>Already Purchased Products</b></label>
+              <ul style=" margin-left: 120px !important;font-size: 14px;">
+                <li *ngFor="let product of products">{{ product }}</li>
+              </ul>
+            </div>
+            <div>
+              <label for="designation"><b>Visiting Card Client</b></label>
+              <select formControlName="selectedName" name="designation"  (change)="onClientSelect()">
+                <option value="" disabled>Select a Personname</option>
+                <option *ngFor="let name of names" [value]="name">{{ name }}</option>
+              </select>
+            </div>         
+            <div>
+              <button type="button" class="client"  (click)="onNewClientSelected()">Add New Client</button>
+            </div>       
+          </div>
+          <div class="dInput">
+            <div>
+              <label for="companyname">Company Name*</label>
+              <input type="text" class="form-control" formControlName="companyname" name="companyname" required>
+              <div *ngIf="leadForm.get('companyname')?.invalid && leadForm.get('companyname')?.touched">
+                <span class="error-text">Company Name is required.</span>
+              </div>
+            </div>
+            <div>
+              <label for="personname">Person Name*</label>
+              <input type="text" class="form-control" formControlName="personname" required>
+              <div *ngIf="leadForm.get('personname')?.invalid && (leadForm.get('personname')?.touched || isSubmitted)">
+                <span class="error-text">Person Name is required.</span>
+              </div>
+            </div>            
+            <div>
+              <label for="email">Email</label>
+              <input type="email" class="form-control" formControlName="email" name="email" required>
+              <div *ngIf="leadForm.get('email')?.invalid && (leadForm.get('email')?.touched || isSubmitted)">
+                <span class="error-text">Email is required.</span>
+              </div>
+            </div>
+          </div>
+          <div class="dInput" v-if="activeStage == 3">
+            <div>
+              <label for="contactno">Contact No*</label>
+              <input type="tel" formControlName="contactno" class="form-control" name="contactno" maxlength="12">
+            </div>
+          <div>
+            <label for="city" class="city">City</label>
+            <input type="text" formControlName="city" class="form-control" name="city" style="margin-left: 34px;">
+          </div>
+          <div>
+              <label for="designation" class="pppp">Profile*</label>
+              <div class="select-container"*ngIf="!showInput4">
+              <select type="text" formControlName="designation" name="designation" required>
+                <option>Select Designation</option>
+                <option *ngIf="!profileData || profileData.length === 0" value="" disabled selected>Fill Master table initially</option>
+                <option *ngFor="let profile of profileData" [value]="profile.profile_name">{{ profile.profile_name }}</option>
+              </select>
+              <span class="plus-sign" (click)="toggleInput4()">+</span>&nbsp;
+             
+              <div *ngIf="leadForm.get('designation')?.invalid && leadForm.get('designation')?.touched">
+                <span class="error-text">Profile is required.</span>
+              </div>
+            </div>
+            <div *ngIf="showInput4">
+              <input type="text" class="input-box" placeholder="Enter new profile" formControlName="profile_name" [(ngModel)]="newprofile">
+              <span class="material-symbols-outlined" (click)="submitprofile()">send</span>
+              <span class="cancel-button" (click)="toggleInput4()">✕</span>
+            </div>  
+          </div>
+        </div>
+          
+
+
+          <div class="dInput" v-if="activeStage == 3">
+            <div>
+              <label for="address">Address</label>
+              <input type="text" formControlName="address" class="form-control" name="address">
+            </div>
+            <div>
+              <label for="source">Source*</label>
+              <div class="select-container" *ngIf="!showInput">
+                <select formControlName="source" name="source" required>
+                  <option>Select Source</option>
+                  <option *ngIf="!sourceData || sourceData.length === 0" value="" disabled selected>Fill Master table initially</option>
+                  <option *ngFor="let source of sourceData" [value]="source.source_name">{{ source.source_name }}</option>
+                </select>
+                <div *ngIf="leadForm.get('source')?.invalid && leadForm.get('source')?.touched">
+                  <span class="error-text">Source is required.</span>
+                </div>
+                <span class="plus-sign" (click)="toggleInput()">+</span>
+              </div>
+              <div *ngIf="showInput">
+                <input type="text" class="input-box" placeholder="Enter new source" formControlName="source_name" [(ngModel)]="newsourceName">
+                <span class="material-symbols-outlined" (click)="submitSource()">send</span>
+                <span class="plus-sign" (click)="toggleInput()">✕</span> 
+              </div>
+            </div>
+
+             <div>
+              <label for="products" class="prd">Products*</label>
+              <div class="select-container" *ngIf="!showInput1">
+                <select formControlName="products" name="products" required style="margin-left: 23px !important;">
+                  <option>Select Products</option>
+                  <option *ngIf="!productData || productData.length === 0" value="" disabled selected>Fill Master table initially</option>
+                  <option *ngFor="let product of productData" [value]="product.product_name">{{ product.product_name }}</option>
+                </select>
+                  <div *ngIf="leadForm.get('products')?.invalid && leadForm.get('products')?.touched">
+                  <span class="error-text">Products are required.</span>
+                </div>
+                <span class="plus-sign" (click)="toggleInput1()">+</span>
+              </div>
+              </div> 
+              
+                <!-- Error message for invalid products -->
+              
+              
+              <div *ngIf="showInput1">
+                <input type="text" class="input-box" placeholder="Enter new product" formControlName="product_name" [(ngModel)]="newproductName">
+                <span class="material-symbols-outlined" (click)="submitprodusts()">send</span>
+                <span class="plus-sign" (click)="toggleInput1()">✕</span> 
+              </div>
+            </div>
+           
+          <div class="dInput" v-if="activeStage == 3">  
+             <div>
+              <label for="stage" class="stage">Stage*</label>
+              <div class="select-container" *ngIf="!showInput2">
+                <select formControlName="stage" name="stage" class="stage">
+                  <option>Select Stage</option>
+                  <option *ngIf="!stageData || stageData.length === 0" value="" disabled selected>Fill Master table initially</option>
+                  <option *ngFor="let stag of stageData" [value]="stag.stage_name">{{ stag.stage_name }}</option>
+                </select>
+                <div *ngIf="leadForm.get('stage')?.invalid && leadForm.get('stage')?.touched">
+                  <span class="error-text">Stage is required.</span>
+                </div>
+                <span class="plus-sign" (click)="toggleInput2()">+</span>
+              </div>
+              <div *ngIf="showInput2">
+                <input type="text" class="input-box" placeholder="Enter new stage" formControlName="stage_name" [(ngModel)]="newstageName">
+                <span class="material-symbols-outlined" (click)="submitStage()">send</span>
+                <span class="plus-sign" (click)="toggleInput2()">✕</span> 
+              </div>
+            </div>           
+            <div>
+              <label for="reminder_status" class="reminder_status">Reminder Status*</label>
+              <select type="text" formControlName="reminder_status" name="reminder_status" class="reminder_status">
+                <option>Select reminder</option>
+                <option *ngIf="!reminderData || reminderData.length === 0" value="" disabled selected>Fill Master table initially</option>
+                <option *ngFor="let reminder of reminderData" [value]="reminder.reminder_name">{{ reminder.reminder_name }}</option>
+              </select>
+              <div *ngIf="leadForm.get('reminder_status')?.invalid && leadForm.get('reminder_status')?.touched">
+                <span class="error-text">Reminder_status is required.</span>
+              </div>
+            </div>
+            <div>
+              <label for="company_vertical">Business Category</label>
+              <div class="select-container" *ngIf="!showInput3">
+                <select formControlName="company_vertical" name="company_vertical">
+                  <option>Select Category</option>
+                  <option *ngIf="!categoryData || categoryData.length === 0" value="" disabled selected>Fill Master table initially</option>
+                  <option *ngFor="let category of categoryData" [value]="category.category_name">{{ category.category_name }}</option>
+                </select>
+                <span class="plus-sign" (click)="toggleInput3()">+</span>
+              </div>
+              <div *ngIf="showInput3">
+                <input type="text" class="input-box" placeholder="Enter new category" formControlName="category_name" [(ngModel)]="newcategory">
+                <span class="material-symbols-outlined" (click)="submitcategory()">send</span>
+                <span class="plus-sign" (click)="toggleInput3()">✕</span> 
+              </div>
+            </div> 
+            
+          </div>
+          <div class="dInput" v-if="activeStage == 3" style="gap: 40px;">
+                 <div>
+              <label for="nextfollow_up_by" class="next-followup">Next Follow-up Date*</label>
+              <input type="date" formControlName="nextfollow_up_by" class="form-control" name="nextfollow_up_by" style="width: 200px;margin-left: 25px !important;">
+            </div>
+            <div *ngIf="leadForm.get('nextfollow_up_by')?.invalid && leadForm.get('nextfollow_up_by')?.touched">
+              <span class="error-text">Nextfollow_up_by is required.</span>
+            </div>
+            
+            <div style="margin-left: 23px;">
+              <label for="remark" class="remark">Remark*</label>
+              <textarea type="text" formControlName="remark" class="remark" name="remark" style="width: 200px;"></textarea>
+            </div>
+            <div *ngIf="leadForm.get('remark')?.invalid && leadForm.get('remark')?.touched">
+              <span class="error-text">Remark is required.</span>
+            </div> 
+          </div>
+            <style>
+              .extended-user-checkboxes {
+                display: flex;
+  flex-direction: column;
+  width: 92%;
+  max-height: 100px; 
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  /* margin-left: 29px; */
+  margin-top: 10px;
+}
+
+
+.extended-user-checkboxes label {
+  display: block;
+  padding: 0px;
+  margin-left: 10px;
+  /* margin: 0px 0; */
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+.extended-user-checkboxes::-webkit-scrollbar {
+  width: 8px;
+}
+
+.extended-user-checkboxes::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.extended-user-checkboxes::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+            </style>
+          <div style="display: flex; justify-content: center; margin-left: 30px; margin-top: 30px; margin-bottom: 30px;">
+            <button type="submit">Save Leads</button>
+          </div> 
+        </form>
+
+      </div>
+      <div *ngIf="showUploadForm" class="row11">
+        <div  class="header">
+          <div style="font-size: 13px;color: red;"> Kindly download the sample file for uploading New Leads in Excel Format.</div>
+          <div style="font-size: 13px;color: red;">*Note: Only .csv format accepted.</div><br><br>
+          <a class="anchor" href="/assets/Sample File.csv" download>Download Sample File</a><br><br><br>
+          <label class="upfile">
+            <input type="file" hidden="true"  (change)="selectFile($event)"/>
+            <img src="/assets/file_icon.png"  width="45" height="45">&nbsp;Select File
+            <button class="btn" (click)="uploadFile()">Upload</button>
+          </label>
+        </div><br><br><br>   
+    </div>
+    </div>
+  </div> 
+           
+</main> 
+</div>
+
+
+
+</body>
+</html>
+
+

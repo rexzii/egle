@@ -1,0 +1,8 @@
+{
+    "/api": {
+      "target": "https://seller.indiamart.com",
+      "secure": false,
+      "changeOrigin": true
+    }
+}
+  
